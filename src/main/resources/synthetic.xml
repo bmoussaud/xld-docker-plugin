@@ -9,83 +9,87 @@
 <!--
     Note: If you modify this file, you must restart the XL Deploy server.
 -->
-<synthetic xsi:schemaLocation="http://www.xebialabs.com/deployit/synthetic synthetic.xsd" xmlns="http://www.xebialabs.com/deployit/synthetic" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <type type="docker.Machine" extends="overthere.SshHost">
-    <property name="os" default="UNIX" kind="enum" enum-class="com.xebialabs.overthere.OperatingSystemFamily"/>
-    <property name="username" default="docker"/>
-    <property name="address" default="localhost"/>
-    <property name="tls_verify" default="true" kind="boolean" required="false"/>
-    <property name="provider" default="virtualbox"/>
-  </type>
+<synthetic xsi:schemaLocation="http://www.xebialabs.com/deployit/synthetic synthetic.xsd" xmlns="http://www.xebialabs.com/deployit/synthetic"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <type type="docker.Machine" extends="overthere.SshHost">
+        <property name="os" default="UNIX" kind="enum" enum-class="com.xebialabs.overthere.OperatingSystemFamily"/>
+        <property name="username" default="docker"/>
+        <property name="address" default="localhost"/>
+        <property name="tls_verify" default="true" kind="boolean" required="false"/>
+        <property name="provider" default="virtualbox"/>
+    </type>
 
-  <type type="docker.Container" extends="generic.Container">
-    <property name="host" kind="ci" referenced-type="docker.Machine" as-containment="true"/>
-    <property name="image" />
-    <property name="volumeDirectory" default="/opt/docker/volumes"/>
-    <method name="logs"  delegate="shellScript" script="docker/log" task-description="Docker logs"/>
-    <method name="inspect" delegate="shellScript"  script="docker/inspect" task-description="Docker inspect"/>
-  </type>
+    <type type="docker.Container" extends="generic.Container">
+        <property name="host" kind="ci" referenced-type="docker.Machine" as-containment="true"/>
+        <property name="image"/>
+        <property name="volumeDirectory" default="/opt/docker/volumes"/>
+        <method name="logs" delegate="shellScript" script="docker/log" task-description="Docker logs"/>
+        <method name="inspect" delegate="shellScript" script="docker/inspect" task-description="Docker inspect"/>
+    </type>
 
 
-  <type type="docker.RunContainer" extends="udm.BaseDeployed" deployable-type="docker.Image" container-type="docker.Machine">
-    <generate-deployable type="docker.Image" extends="udm.BaseDeployable"/>
-    <property name="image" />
-    <property name="command" required="false" />
-    <property name="entryPoint" required="false" />
-    <property name="publishAllExposedPorts" required="false" kind="boolean" default="false" category="Network"/>
-    <property name="portMappings" kind="map_string_string" required="false" category="Network"/>
-    <property name="links" kind="set_of_string" required="false" category="Network"/>
-    <property name="volumeMappings" kind="map_string_string" required="false" category="Volumes"/>
-    <property name="volumeFromMappings" kind="set_of_string" required="false" category="Volumes"/>
-    <property name="extendedPrivileges" kind="boolean" required="false" default="false" category="Advanced"/>
-    <property name="workDirectory"  required="false" kind="boolean" default="false" category="Advanced"/>
-    <property name="removeOnExit" description="Automatically remove the container when it exits" kind="boolean" default="false" required="false" category="Advanced"/>
-  </type>
+    <type type="docker.RunContainer" extends="udm.BaseDeployed" deployable-type="docker.Image" container-type="docker.Machine">
+        <generate-deployable type="docker.Image" extends="udm.BaseDeployable"/>
+        <property name="image"/>
+        <property name="command" required="false"/>
+        <property name="entryPoint" required="false"/>
+        <property name="publishAllExposedPorts" required="false" kind="boolean" default="false" category="Network"/>
+        <property name="portMappings" kind="map_string_string" required="false" category="Network"/>
+        <property name="links" kind="set_of_string" required="false" category="Network"/>
+        <property name="volumeMappings" kind="map_string_string" required="false" category="Volumes"/>
+        <property name="volumeFromMappings" kind="set_of_string" required="false" category="Volumes"/>
+        <property name="extendedPrivileges" kind="boolean" required="false" default="false" category="Advanced"/>
+        <property name="memory" required="false"  category="Advanced"/>
+        <property name="workDirectory" required="false" kind="boolean" default="false" category="Advanced"/>
+        <property name="removeOnExit" description="Automatically remove the container when it exits" kind="boolean" default="false" required="false"
+                  category="Advanced"/>
+    </type>
 
-  <type type="docker.ComposedContainers" extends="udm.BaseDeployedArtifact" deployable-type="docker.ComposeFile" container-type="docker.Machine">
-    <generate-deployable type="docker.ComposeFile" extends="udm.BaseDeployableFileArtifact"/>
-  </type>
+    <type type="docker.ComposedContainers" extends="udm.BaseDeployedArtifact" deployable-type="docker.ComposeFile" container-type="docker.Machine">
+        <generate-deployable type="docker.ComposeFile" extends="udm.BaseDeployableFileArtifact"/>
+    </type>
 
-  <type-modification type="docker.ComposeFile">
-    <property name="scanPlaceholders" default="true" kind="boolean" />
-    <property name="textFileNamesRegex" default=".+\.(yml | yaml)" hidden="true"/>
-  </type-modification>
+    <type-modification type="docker.ComposeFile">
+        <property name="scanPlaceholders" default="true" kind="boolean"/>
+        <property name="textFileNamesRegex" default=".+\.(yml | yaml)" hidden="true"/>
+    </type-modification>
 
-  <type-modification type="overthere.SshHost" >
-    <property name="tmpDeleteOnDisconnect" kind="boolean" default="true" hidden="false" category="Advanced"/>
-  </type-modification>
+    <type-modification type="overthere.SshHost">
+        <property name="tmpDeleteOnDisconnect" kind="boolean" default="true" hidden="false" category="Advanced"/>
+    </type-modification>
 
-  <!-- smoke test -->
-  <type type="smoketest.DockerRunner" extends="docker.Container">
-    <property name="image" default="cmfatih/ubuntu"/>
-    <property name="powershellInstalled" kind="boolean" default="true" required="false" hidden="true" description="Enable to indicate Powershell (V3+) installed on the host associated to the Runner"/>
-  </type>
+    <!-- smoke test -->
+    <type type="smoketest.DockerRunner" extends="docker.Container">
+        <property name="image" default="cmfatih/ubuntu"/>
+        <property name="powershellInstalled" kind="boolean" default="true" required="false" hidden="true"
+                  description="Enable to indicate Powershell (V3+) installed on the host associated to the Runner"/>
+    </type>
 
-  <type type="smoketest.ExecutedDockerizedHttpRequestTest" extends="udm.BaseDeployed"
-    container-type="smoketest.DockerRunner" deployable-type="smoketest.HttpRequestTest">
-    <property name="link" description="link to a docker container if needed" required="false" />
+    <type type="smoketest.ExecutedDockerizedHttpRequestTest" extends="udm.BaseDeployed"
+          container-type="smoketest.DockerRunner" deployable-type="smoketest.HttpRequestTest">
+        <property name="link" description="link to a docker container if needed" required="false"/>
 
-    <property name="url" description="The URL to test"/>
-    <property name="expectedResponseText" size="large"
-      description="Text that is expected to be contained in the HTTP response body, if the response code is in the 200 range. A non-2xx response code will cause the test to fail irrespective of the response body"/>
+        <property name="url" description="The URL to test"/>
+        <property name="expectedResponseText" size="large"
+                  description="Text that is expected to be contained in the HTTP response body, if the response code is in the 200 range. A non-2xx response code will cause the test to fail irrespective of the response body"/>
 
-    <property name="showPageInConsole" required="false" kind="boolean" default="false" category="Options"
-      description="Show the page retrieved from the url"/>
-    <property name="headers" kind="set_of_string" required="false" category="Request Headers"/>
-    <property name="ignoreCertificateWarnings" required="false" default="true" kind="boolean" category="Options"
-      description="If set, certificate warnings when making a connection will be ignored"/>
-    <property name="startDelay" kind="integer" default="2" category="Options" description="Time in seconds to wait before starting the execution of step"/>
-    <property name="maxRetries" kind="integer" default="5" category="Options"
-      description="Number of times to attempt executing the step, in case it fails"/>
-    <property name="retryWaitInterval" kind="integer" default="5" category="Options" description="Time in seconds to wait before next retry"/>
-    <property name="timeout" kind="integer" default="30" category="Options" description="Timeout in seconds for a query on the specified url"/>
-    <property name="entryPoint" required="false" default="/bin/bash" hidden="true"/>
-  </type>
+        <property name="showPageInConsole" required="false" kind="boolean" default="false" category="Options"
+                  description="Show the page retrieved from the url"/>
+        <property name="headers" kind="set_of_string" required="false" category="Request Headers"/>
+        <property name="ignoreCertificateWarnings" required="false" default="true" kind="boolean" category="Options"
+                  description="If set, certificate warnings when making a connection will be ignored"/>
+        <property name="startDelay" kind="integer" default="2" category="Options" description="Time in seconds to wait before starting the execution of step"/>
+        <property name="maxRetries" kind="integer" default="5" category="Options"
+                  description="Number of times to attempt executing the step, in case it fails"/>
+        <property name="retryWaitInterval" kind="integer" default="5" category="Options" description="Time in seconds to wait before next retry"/>
+        <property name="timeout" kind="integer" default="30" category="Options" description="Timeout in seconds for a query on the specified url"/>
+        <property name="entryPoint" required="false" default="/bin/bash" hidden="true"/>
+    </type>
 
-  <type-modification type="smoketest.HttpRequestTest">
-    <property name="link" description="link to a docker container if needed" required="false" />
-  </type-modification>
-  <!-- /smoke test -->
+    <type-modification type="smoketest.HttpRequestTest">
+        <property name="link" description="link to a docker container if needed" required="false"/>
+    </type-modification>
+    <!-- /smoke test -->
 
 
 </synthetic>

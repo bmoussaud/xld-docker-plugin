@@ -6,10 +6,12 @@
 
 -->
 echo "Running ${deployed.id}"
-#docker run -d --name ${deployed.name} ${deployed.image}
 <#assign cmdLine = ["docker", "run","-d"] />
 <#if (deployed.publishAllExposedPorts)>
-<#assign cmdLine = cmdLine + ["-P"]/>
+    <#assign cmdLine = cmdLine + ["-P"]/>
+</#if>
+<#if (deployed.memory??)>
+    <#assign cmdLine = cmdLine + ["--memory ${deployed.memory}" ]/>
 </#if>
 <#list deployed.portMappings?keys as key>
     <#assign cmdLine = cmdLine + ["-p ${key}:${deployed.portMappings[key]}"]/>
