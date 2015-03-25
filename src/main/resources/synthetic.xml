@@ -67,7 +67,7 @@
 
     <type type="smoketest.ExecutedDockerizedHttpRequestTest" extends="udm.BaseDeployed"
           container-type="smoketest.DockerRunner" deployable-type="smoketest.HttpRequestTest">
-        <property name="link" description="link to a docker container if needed" required="false"/>
+        <property name="links" kind="set_of_string" required="false" category="Network"/>
 
         <property name="url" description="The URL to test"/>
         <property name="expectedResponseText" size="large"
@@ -87,7 +87,7 @@
     </type>
 
     <type-modification type="smoketest.HttpRequestTest">
-        <property name="link" description="link to a docker container if needed" required="false"/>
+        <property name="links" kind="set_of_string" required="false" category="Network"/>
     </type-modification>
     <!-- /smoke test -->
 
