@@ -25,7 +25,7 @@
             </os-script>
       -->
             <os-script>
-                <description expression="true">"Run the container %s (%s)" % (deployed.name, deployed.image)</description>
+                <description expression="true">"Run the container '%s' (%s)" % (deployed.name, deployed.image)</description>
                 <order>65</order>
                 <script>docker/docker-run</script>
             </os-script>
@@ -35,7 +35,7 @@
                 <seconds>10</seconds>
             </wait>
             <os-script>
-                <description expression="true">"Dump the logs of the container %s" % (deployed.name)</description>
+                <description expression="true">"Dump the logs of the container '%s'" % (deployed.name)</description>
                 <order>65</order>
                 <script>docker/docker-log</script>
             </os-script>
@@ -49,12 +49,12 @@
         </conditions>
         <steps>
             <os-script>
-                <description expression="true">"Stop the container %s (%s)" % (previousDeployed.name, previousDeployed.image)</description>
+                <description expression="true">"Stop the container '%s' (%s)" % (previousDeployed.name, previousDeployed.image)</description>
                 <order>35</order>
                 <script>docker/docker-stop</script>
             </os-script>
             <os-script>
-                <description expression="true">"Remove the container %s (%s)" % (previousDeployed.name, previousDeployed.image)</description>
+                <description expression="true">"Remove the container '%s' (%s)" % (previousDeployed.name, previousDeployed.image)</description>
                 <order>35</order>
                 <script>docker/docker-rm</script>
             </os-script>
@@ -83,4 +83,39 @@
             </os-script>
         </steps>
     </rule>
+
+
+    <rule name="docker.Volume.Create" scope="deployed">
+        <conditions>
+            <type>docker.DeployedFolder</type>
+            <operation>CREATE</operation>
+            <operation>MODIFY</operation>
+        </conditions>
+        <steps>
+            <upload>
+                <target-host expression="true">deployed.container.host</target-host>
+                <target-path expression="true">"%s/%s" % (deployed.container.volumeDirectory,deployed.name)</target-path>
+                <create-target-path>true</create-target-path>
+                <order>50</order>
+                <description expression="true">"Copy volume '%s' to '%s'" % (deployed.name, deployed.container.name)</description>
+            </upload>
+        </steps>
+    </rule>
+    <rule name="docker.Volume.Destroy" scope="deployed">
+        <conditions>
+            <type>docker.DeployedFolder</type>
+            <operation>DESTROY</operation>
+            <operation>MODIFY</operation>
+        </conditions>
+        <steps>
+            <delete>
+                <target-host expression="true">previousDeployed.container.host</target-host>
+                <target-path expression="true">"%s/%s" % (previousDeployed.container.volumeDirectory,previousDeployed.name)</target-path>
+                <order>40</order>
+                <description expression="true">"Delete volume '%s' from '%s'" % (previousDeployed.name,previousDeployed.container.name)
+                </description>
+            </delete>
+        </steps>
+    </rule>
+
 </rules>

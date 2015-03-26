@@ -11,6 +11,7 @@
 -->
 <synthetic xsi:schemaLocation="http://www.xebialabs.com/deployit/synthetic synthetic.xsd" xmlns="http://www.xebialabs.com/deployit/synthetic"
            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
     <type type="docker.Machine" extends="overthere.SshHost">
         <property name="os" default="UNIX" kind="enum" enum-class="com.xebialabs.overthere.OperatingSystemFamily"/>
         <property name="username" default="docker"/>
@@ -34,16 +35,50 @@
         <property name="command" required="false"/>
         <property name="entryPoint" required="false"/>
         <property name="publishAllExposedPorts" required="false" kind="boolean" default="false" category="Network"/>
-        <property name="portMappings" kind="map_string_string" required="false" category="Network"/>
-        <property name="links" kind="set_of_string" required="false" category="Network"/>
-        <property name="volumeMappings" kind="map_string_string" required="false" category="Volumes"/>
-        <property name="volumeFromMappings" kind="set_of_string" required="false" category="Volumes"/>
+        <property name="ports" kind="set_of_ci" referenced-type="docker.Port" as-containment="true" required="false" category="Network"/>
+        <property name="links" kind="set_of_ci" referenced-type="docker.Link" as-containment="true" required="false" category="Network"/>
+        <property name="volumes" kind="set_of_ci" referenced-type="docker.Volume" as-containment="true" required="false" category="Volumes"/>
+        <property name="volumesFrom" kind="set_of_string" required="false" category="Volumes"/>
         <property name="extendedPrivileges" kind="boolean" required="false" default="false" category="Advanced"/>
         <property name="memory" required="false" category="Advanced"/>
         <property name="workDirectory" required="false" kind="boolean" default="false" category="Advanced"/>
         <property name="removeOnExit" description="Automatically remove the container when it exits" kind="boolean" default="false" required="false"
                   category="Advanced"/>
     </type>
+
+    <type-modification type="docker.Image">
+        <property name="ports" kind="set_of_ci" referenced-type="docker.PortSpec" as-containment="true" required="false" category="Network"/>
+        <property name="links" kind="set_of_ci" referenced-type="docker.LinkSpec" as-containment="true" required="false" category="Network"/>
+        <property name="volumes" kind="set_of_ci" referenced-type="docker.VolumeSpec" as-containment="true" required="false" category="Volumes"/>
+    </type-modification>
+
+    <type type="docker.Volume" deployable-type="docker.VolumeSpec" container-type="docker.RunContainer" extends="udm.BaseEmbeddedDeployed">
+        <generate-deployable type="docker.VolumeSpec" extends="udm.BaseEmbeddedDeployable"/>
+        <property name="hostPath" required="false"/>
+        <property name="containerPath"/>
+    </type>
+
+    <type type="docker.Link" deployable-type="docker.LinkSpec" container-type="docker.RunContainer" extends="udm.BaseEmbeddedDeployed">
+        <generate-deployable type="docker.LinkSpec" extends="udm.BaseEmbeddedDeployable"/>
+        <property name="alias" required="false"/>
+    </type>
+
+    <type type="docker.Port" deployable-type="docker.PortSpec" container-type="docker.RunContainer" extends="udm.BaseEmbeddedDeployed">
+        <generate-deployable type="docker.PortSpec" extends="udm.BaseEmbeddedDeployable"/>
+        <property name="hostPort" required="false" kind="integer"/>
+        <property name="containerPort" kind="integer"/>
+    </type>
+
+
+    <type type="docker.VolumeManager" extends="generic.Container">
+        <property name="host" kind="ci" referenced-type="docker.Machine" as-containment="true"/>
+        <property name="volumeDirectory" default="/opt/docker/volumes"/>
+    </type>
+
+    <type type="docker.DeployedFolder" extends="udm.BaseDeployedArtifact" deployable-type="docker.Folder" container-type="docker.VolumeManager">
+        <generate-deployable type="docker.Folder" extends="udm.BaseDeployableFolderArtifact"/>
+    </type>
+
 
     <type type="docker.ComposedContainers" extends="udm.BaseDeployedArtifact" deployable-type="docker.ComposeFile" container-type="docker.Machine">
         <generate-deployable type="docker.ComposeFile" extends="udm.BaseDeployableFileArtifact"/>

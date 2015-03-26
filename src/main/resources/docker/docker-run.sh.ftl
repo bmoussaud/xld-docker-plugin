@@ -13,12 +13,19 @@ echo "Running ${deployed.id}"
 <#if (deployed.memory??)>
     <#assign cmdLine = cmdLine + ["--memory ${deployed.memory}" ]/>
 </#if>
-<#list deployed.portMappings?keys as key>
-    <#assign cmdLine = cmdLine + ["-p ${key}:${deployed.portMappings[key]}"]/>
+<#list deployed.ports as port>
+    <#assign cmdLine = cmdLine + ["-p ${port.hostPort}:${port.hostPort}"]/>
 </#list>
 <#list deployed.links as link>
-    <#assign cmdLine = cmdLine + ["--link=${link}"]/>
+    <#assign cmdLine = cmdLine + ["--link=${link.name}:${link.alias}"]/>
 </#list>
+<#list deployed.volumes as volume>
+    <#assign cmdLine = cmdLine + ["-v ${volume.hostPath}:${volume.containerPath}"]/>
+</#list>
+<#list deployed.volumesFrom as volume>
+    <#assign cmdLine = cmdLine + ["--volumes-from=${volume}"]/>
+</#list>
+
 <#assign cmdLine = cmdLine + ["--name ${deployed.name}"]/>
 <#assign cmdLine = cmdLine + ["${deployed.image}"]/>
 
