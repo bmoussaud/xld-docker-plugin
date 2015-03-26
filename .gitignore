@@ -3,4 +3,5 @@ build/
 *.iml
 *.ipr
 *.iws
-
+PetDocker/dar/deployit-manifest.xml
+PetDocker/PetDocker-*.dar

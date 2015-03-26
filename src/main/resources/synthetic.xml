@@ -39,7 +39,7 @@
         <property name="volumeMappings" kind="map_string_string" required="false" category="Volumes"/>
         <property name="volumeFromMappings" kind="set_of_string" required="false" category="Volumes"/>
         <property name="extendedPrivileges" kind="boolean" required="false" default="false" category="Advanced"/>
-        <property name="memory" required="false"  category="Advanced"/>
+        <property name="memory" required="false" category="Advanced"/>
         <property name="workDirectory" required="false" kind="boolean" default="false" category="Advanced"/>
         <property name="removeOnExit" description="Automatically remove the container when it exits" kind="boolean" default="false" required="false"
                   category="Advanced"/>
@@ -90,6 +90,19 @@
         <property name="links" kind="set_of_string" required="false" category="Network"/>
     </type-modification>
     <!-- /smoke test -->
+
+    <!-- MySQL Database -->
+    <type type="sql.DockerMySqlClient" extends="sql.MySqlClient">
+        <property name="image" default="mysql:5.7.6"/>
+    </type>
+
+    <type type="sql.DockerizedExecutedSqlScripts" extends="sql.ExecutedSqlScripts"
+          deployable-type="sql.SqlScripts"
+          container-type="sql.DockerMySqlClient"
+          description="SQL scripts executed on an SQL client by Docker!">
+        <property name="executorScript" hidden="true" default="docker/${deployed.container.clientWrapperScript}"/>
+    </type>
+    <!-- /MySQL Database -->
 
 
 </synthetic>
