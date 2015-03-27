@@ -87,7 +87,7 @@
 
     <rule name="docker.Volume.Create" scope="deployed">
         <conditions>
-            <type>docker.DeployedFolder</type>
+            <type>docker.DeployedFolderVolume</type>
             <operation>CREATE</operation>
             <operation>MODIFY</operation>
         </conditions>
@@ -103,7 +103,7 @@
     </rule>
     <rule name="docker.Volume.Destroy" scope="deployed">
         <conditions>
-            <type>docker.DeployedFolder</type>
+            <type>docker.DeployedFolderVolume</type>
             <operation>DESTROY</operation>
             <operation>MODIFY</operation>
         </conditions>

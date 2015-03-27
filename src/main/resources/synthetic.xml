@@ -18,6 +18,7 @@
         <property name="address" default="localhost"/>
         <property name="tls_verify" default="true" kind="boolean" required="false"/>
         <property name="provider" default="virtualbox"/>
+        <property name="volumeDirectory" default="/opt/docker/volumes" category="Volumes" />
     </type>
 
     <type type="docker.Container" extends="generic.Container">
@@ -69,16 +70,9 @@
         <property name="containerPort" kind="integer"/>
     </type>
 
-
-    <type type="docker.VolumeManager" extends="generic.Container">
-        <property name="host" kind="ci" referenced-type="docker.Machine" as-containment="true"/>
-        <property name="volumeDirectory" default="/opt/docker/volumes"/>
-    </type>
-
-    <type type="docker.DeployedFolder" extends="udm.BaseDeployedArtifact" deployable-type="docker.Folder" container-type="docker.VolumeManager">
+    <type type="docker.DeployedFolderVolume" extends="udm.BaseDeployedArtifact" deployable-type="docker.Folder" container-type="docker.Machine">
         <generate-deployable type="docker.Folder" extends="udm.BaseDeployableFolderArtifact"/>
     </type>
-
 
     <type type="docker.ComposedContainers" extends="udm.BaseDeployedArtifact" deployable-type="docker.ComposeFile" container-type="docker.Machine">
         <generate-deployable type="docker.ComposeFile" extends="udm.BaseDeployableFileArtifact"/>
