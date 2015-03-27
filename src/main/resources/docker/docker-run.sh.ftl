@@ -14,7 +14,7 @@ echo "Running ${deployed.id}"
     <#assign cmdLine = cmdLine + ["--memory ${deployed.memory}" ]/>
 </#if>
 <#list deployed.ports as port>
-    <#assign cmdLine = cmdLine + ["-p ${port.hostPort}:${port.hostPort}"]/>
+    <#assign cmdLine = cmdLine + ["-p ${port.hostPort}:${port.containerPort}"]/>
 </#list>
 <#list deployed.links as link>
     <#assign cmdLine = cmdLine + ["--link=${link.name}:${link.alias}"]/>
