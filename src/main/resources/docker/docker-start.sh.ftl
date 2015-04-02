@@ -5,5 +5,5 @@
     FOR A PARTICULAR PURPOSE. THIS CODE AND INFORMATION ARE NOT SUPPORTED BY XEBIALABS.
 
 -->
-echo "Remove the container ${name}"
-docker rm ${name}
+echo "Start the container ${name}"
+docker start ${name}

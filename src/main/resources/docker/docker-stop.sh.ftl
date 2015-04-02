@@ -5,5 +5,5 @@
     FOR A PARTICULAR PURPOSE. THIS CODE AND INFORMATION ARE NOT SUPPORTED BY XEBIALABS.
 
 -->
-echo "Stop the container ${previousDeployed.name}, kill it after 10 seconds"
-docker stop --time=10 ${previousDeployed.name}
+echo "Stop the container ${name}, kill it after 10 seconds"
+docker stop --time=10 ${name}

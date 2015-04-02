@@ -47,3 +47,10 @@ export DOCKER_HOST=tcp://192.168.99.100:2376
 ![initial deployment with xld-docker-plugin](img/docker-deployment.png)
 
 
+# TODO #
+
+* docker.Volume linked with docker.DeployedFolderVolume
+* Manage Volume modification -> stop / start container.
+
+
+

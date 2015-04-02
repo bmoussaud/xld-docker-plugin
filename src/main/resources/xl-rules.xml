@@ -52,11 +52,17 @@
                 <description expression="true">"Stop the container '%s' (%s)" % (previousDeployed.name, previousDeployed.image)</description>
                 <order>35</order>
                 <script>docker/docker-stop</script>
+                <freemarker-context>
+                    <name expression="true">previousDeployed.name</name>
+                </freemarker-context>
             </os-script>
             <os-script>
                 <description expression="true">"Remove the container '%s' (%s)" % (previousDeployed.name, previousDeployed.image)</description>
                 <order>35</order>
                 <script>docker/docker-rm</script>
+                <freemarker-context>
+                    <name expression="true">previousDeployed.name</name>
+                </freemarker-context>
             </os-script>
         </steps>
     </rule>
@@ -118,4 +124,7 @@
         </steps>
     </rule>
 
+    <rule name="docker.stop.start.on.modified.volumes" scope="plan">
+        <planning-script-path>docker/planning/start-stop-container-on-modified-volumes.py</planning-script-path>
+    </rule>
 </rules>

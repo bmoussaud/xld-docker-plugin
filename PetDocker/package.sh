@@ -1,5 +1,5 @@
 #!/bin/sh
-$(docker-machine env dev-machine)
+$(docker-machine env dev)
 VERSION=$1
 echo "Buid Version $VERSION"
 docker build -t petdocker/petdocker-app:$VERSION petclinic
