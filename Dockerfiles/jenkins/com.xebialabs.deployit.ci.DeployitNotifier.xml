@@ -1,0 +1,14 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<com.xebialabs.deployit.ci.DeployitNotifier_-DeployitDescriptor plugin="deployit-plugin@4.5.2">
+  <deployitServerUrl>http://xldeploy:4516</deployitServerUrl>
+  <deployitClientProxyUrl></deployitClientProxyUrl>
+  <connectionPoolSize>10</connectionPoolSize>
+  <credentials>
+    <com.xebialabs.deployit.ci.Credential>
+      <name>admin</name>
+      <username>admin</username>
+      <password>zj9Kz9dCbE0qkL8uQlBYzCyXPus9Ckmf/Wxr9IhPiA4=</password>
+    </com.xebialabs.deployit.ci.Credential>
+  </credentials>
+</com.xebialabs.deployit.ci.DeployitNotifier_-DeployitDescriptor>
+
