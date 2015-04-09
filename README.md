@@ -62,11 +62,11 @@ In the `Environments` directory run
 on your docker machine
 * docker-machine ssh <machine>
 * sudo vi /var/lib/boot2docker/profile
-Add `EXTRA_ARGS='--insecure-registry 192.168.99.100:5000 --insecure-registry registry:5000  ` to the EXTRA_ARGS line
+Add `EXTRA_ARGS='--insecure-registry <IP_MACHINE>:5000` to the EXTRA_ARGS line
 * exit
 * docker-machine stop <machine>
 * docker-machine start <machine>
-
+* docker log file is located here: tail -f /var/log/docker.log
 
 # Jenkins PetPortal Job
 * Adminstration Jenkin: define a default Maven location.
@@ -76,6 +76,8 @@ Add `EXTRA_ARGS='--insecure-registry 192.168.99.100:5000 --insecure-registry reg
 * Commands after build
   * cp ${WORKSPACE}/PetClinic/target/PetClinic.war $WORKSPACE/docker/petclinic/PetClinic.war
   * /usr/bin/docker build -t petdocker/petdocker-app:$BUILD_NUMBER $WORKSPACE/docker/petclinic
+  * /usr/bin/docker tag petdocker/petdocker-app:$BUILD_NUMBER  <IP_MACHINE>:5000/petdocker/petdocker-app:$BUILD_NUMBER 
+  * /usr/bin/docker push <IP_MACHINE>:5000/petdocker/petdocker-app:$BUILD_NUMBER 
  
 docker run -p 5000:5000 registry
 test registry http://192.168.99.100:5000/v1/search
