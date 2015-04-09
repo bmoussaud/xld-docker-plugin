@@ -52,5 +52,33 @@ export DOCKER_HOST=tcp://192.168.99.100:2376
 * docker.Volume linked with docker.DeployedFolderVolume
 * Manage Volume modification -> stop / start container.
 
+# Start the Software Factory
+The Software Factory contains a Jenkins and a Docker Registry
+In the `Environments` directory run
+* docker-compose -f  software-factory.yml  build
+* docker-compose -f  software-factory.yml  up
+
+# Set up a docker registry
+on your docker machine
+* docker-machine ssh <machine>
+* sudo vi /var/lib/boot2docker/profile
+Add `EXTRA_ARGS='--insecure-registry 192.168.99.100:5000 --insecure-registry registry:5000  ` to the EXTRA_ARGS line
+* exit
+* docker-machine stop <machine>
+* docker-machine start <machine>
+
+
+# Jenkins PetPortal Job
+* Adminstration Jenkin: define a default Maven location.
+* Maven Job
+* Git : https://github.com/bmoussaud/xld-petclinic-tomcat.git
+* Branch: docker
+* Commands after build
+  * cp ${WORKSPACE}/PetClinic/target/PetClinic.war $WORKSPACE/docker/petclinic/PetClinic.war
+  * /usr/bin/docker build -t petdocker/petdocker-app:$BUILD_NUMBER $WORKSPACE/docker/petclinic
+ 
+docker run -p 5000:5000 registry
+test registry http://192.168.99.100:5000/v1/search
+
 
 

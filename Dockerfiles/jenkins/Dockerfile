@@ -1,14 +1,23 @@
-FROM jenkins
+FROM jenkins:weekly
 
-COPY hudson.tasks.Maven.xml /var/jenkins_home/hudson.tasks.Maven.xml
-COPY com.xebialabs.deployit.ci.DeployitNotifier.xml /var/jenkins_home/com.xebialabs.deployit.ci.DeployitNotifier.xml
-#RUN mkdir -p /var/jenkins_home/jobs/PetPortal
-#COPY jobs/PetPortal/config.xml /var/jenkins_home/jobs/PetPortal/config.xml
+USER root
 
+RUN wget -qO- https://get.docker.com/ | sh
 
-COPY plugins.txt /usr/share/jenkins/plugins.txt
-RUN /usr/local/bin/plugins.sh /usr/share/jenkins/plugins.txt
+RUN groupmod -g 233 docker && \
+    usermod -a -G docker jenkins
 
+ADD init/*.groovy /usr/share/jenkins/init.groovy.d/
 
+RUN mkdir -p /usr/share/jenkins/plugins && \
+    chown -R jenkins /usr/share/jenkins/plugins /usr/share/jenkins/init.groovy.d
 
+ADD plugins.awk plugins.csv /usr/share/jenkins/
 
+RUN awk -f /usr/share/jenkins/plugins.awk /usr/share/jenkins/plugins.csv | sh
+
+ADD jenkins-init.sh /usr/local/bin/jenkins-init.sh
+
+VOLUME ["/var/jenkins_home"]
+
+ENTRYPOINT ["/usr/local/bin/jenkins-init.sh"]

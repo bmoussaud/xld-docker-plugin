@@ -2,7 +2,7 @@
 <hudson.tasks.Maven_-DescriptorImpl>
   <installations>
     <hudson.tasks.Maven_-MavenInstallation>
-      <name>DefaultMaven</name>
+      <name>Maven332</name>
       <properties>
         <hudson.tools.InstallSourceProperty>
           <installers>
@@ -15,4 +15,3 @@
     </hudson.tasks.Maven_-MavenInstallation>
   </installations>
 </hudson.tasks.Maven_-DescriptorImpl>
-
