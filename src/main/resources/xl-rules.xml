@@ -65,10 +65,13 @@
             <type>docker.RunContainer</type>
             <operation>CREATE</operation>
             <operation>MODIFY</operation>
+            <expression>deployed.container.privateRegistryAddress is not None and deployed.container.privateRegistryPort is not None</expression>
         </conditions>
         <steps>
             <os-script>
-                <description expression="true">"Pull the container %s (%s) from the registry %s:%s " % (deployed.name, deployed.image, deployed.container.privateRegistryAddress, deployed.container.privateRegistryPort) </description>
+                <description expression="true">"Pull the container %s (%s) from the registry %s:%s " % (deployed.name, deployed.image,
+                    deployed.container.privateRegistryAddress, deployed.container.privateRegistryPort)
+                </description>
                 <order>55</order>
                 <script>docker/docker-pull-tag</script>
             </os-script>

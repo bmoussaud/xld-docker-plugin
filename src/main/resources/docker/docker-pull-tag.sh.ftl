@@ -8,5 +8,5 @@
 echo docker pull ${deployed.container.privateRegistryAddress}:${deployed.container.privateRegistryPort}/${deployed.image}
 docker pull ${deployed.container.privateRegistryAddress}:${deployed.container.privateRegistryPort}/${deployed.image}
 
-echo docker tag ${deployed.container.privateRegistryAddress}:${deployed.container.privateRegistryPort}/${deployed.image} ${deployed.image}
-docker tag ${deployed.container.privateRegistryAddress}:${deployed.container.privateRegistryPort}/${deployed.image} ${deployed.image}
+echo docker tag -f ${deployed.container.privateRegistryAddress}:${deployed.container.privateRegistryPort}/${deployed.image} ${deployed.image}
+docker tag -f ${deployed.container.privateRegistryAddress}:${deployed.container.privateRegistryPort}/${deployed.image} ${deployed.image}
