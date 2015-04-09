@@ -17,13 +17,6 @@
             <operation>MODIFY</operation>
         </conditions>
         <steps>
-            <!--
-            <os-script>
-              <description expression="true">"Pull the container %s (%s)" % (deployed.name, deployed.image) </description>
-              <order>55</order>
-              <script>docker/docker-pull</script>
-            </os-script>
-      -->
             <os-script>
                 <description expression="true">"Run the container '%s' (%s)" % (deployed.name, deployed.image)</description>
                 <order>65</order>
@@ -66,6 +59,22 @@
             </os-script>
         </steps>
     </rule>
+
+    <rule name="docker.Container.Create.Pull" scope="deployed">
+        <conditions>
+            <type>docker.RunContainer</type>
+            <operation>CREATE</operation>
+            <operation>MODIFY</operation>
+        </conditions>
+        <steps>
+            <os-script>
+                <description expression="true">"Pull the container %s (%s) from the registry %s:%s " % (deployed.name, deployed.image, deployed.container.privateRegistryAddress, deployed.container.privateRegistryPort) </description>
+                <order>55</order>
+                <script>docker/docker-pull-tag</script>
+            </os-script>
+        </steps>
+    </rule>
+
 
     <rule name="smoketest.RunHttpRequest.docker" scope="deployed">
         <conditions>

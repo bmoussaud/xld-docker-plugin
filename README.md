@@ -70,10 +70,30 @@ Add `EXTRA_ARGS='--insecure-registry <IP_MACHINE>:5000` to the EXTRA_ARGS line
 
 # Jenkins PetPortal Job
 * Adminstration Jenkin: define a default Maven location.
+* Adminstration Jenkin: define the XLD Configuration using
+  http://10.0.2.2:4516 (super host address when using VirtualBox)
+
 * Maven Job
 * Git : https://github.com/bmoussaud/xld-petclinic-tomcat.git
 * Branch: docker
 * Commands after build
+```
+cp ${WORKSPACE}/PetClinic/target/PetClinic.war $WORKSPACE/docker/petclinic/PetClinic.war
+cp ${WORKSPACE}/PetClinic-Backend/target/PetClinic-Backend.war $WORKSPACE/docker/petclinic-backend/PetClinic-Backend.war
+```
+
+```
+/usr/bin/docker build -t 192.168.99.100:5000/petportal/petclinic:$BUILD_NUMBER $WORKSPACE/docker/petclinic
+/usr/bin/docker build -t 192.168.99.100:5000/petportal/petclinic-back:$BUILD_NUMBER $WORKSPACE/docker/petclinic-backend
+```
+
+```
+/usr/bin/docker push 192.168.99.100:5000/petportal/petclinic:$BUILD_NUMBER
+/usr/bin/docker push 192.168.99.100:5000/petportal/petclinic-back:$BUILD_NUMBER
+```
+
+Note: Replace 192.168.99.100 by your <IP_DOCKER_MACHINE>
+
   * cp ${WORKSPACE}/PetClinic/target/PetClinic.war $WORKSPACE/docker/petclinic/PetClinic.war
   * /usr/bin/docker build -t petdocker/petdocker-app:$BUILD_NUMBER $WORKSPACE/docker/petclinic
   * /usr/bin/docker tag petdocker/petdocker-app:$BUILD_NUMBER  <IP_MACHINE>:5000/petdocker/petdocker-app:$BUILD_NUMBER 
@@ -81,6 +101,9 @@ Add `EXTRA_ARGS='--insecure-registry <IP_MACHINE>:5000` to the EXTRA_ARGS line
  
 docker run -p 5000:5000 registry
 test registry http://192.168.99.100:5000/v1/search
+Notes: 
+* http://www.activestate.com/blog/2014/01/deploying-your-own-private-docker-registry
+* ..
 
 
 

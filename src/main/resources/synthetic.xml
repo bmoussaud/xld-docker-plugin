@@ -19,6 +19,8 @@
         <property name="tls_verify" default="true" kind="boolean" required="false"/>
         <property name="provider" default="virtualbox"/>
         <property name="volumeDirectory" default="/opt/docker/volumes" category="Volumes" />
+        <property name="privateRegistryAddress" default="" category="Registry" />
+        <property name="privateRegistryPort" default="" category="Registry" />
     </type>
 
     <type type="docker.Container" extends="generic.Container">
