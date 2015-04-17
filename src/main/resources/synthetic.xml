@@ -18,9 +18,9 @@
         <property name="address" default="localhost"/>
         <property name="tls_verify" default="true" kind="boolean" required="false"/>
         <property name="provider" default="virtualbox"/>
-        <property name="volumeDirectory" default="/opt/docker/volumes" category="Volumes" />
-        <property name="privateRegistryAddress" required="false" category="Registry" />
-        <property name="privateRegistryPort" required="false" kind="integer" category="Registry" />
+        <property name="volumeDirectory" default="/opt/docker/volumes" category="Volumes"/>
+        <property name="privateRegistryAddress" required="false" category="Registry"/>
+        <property name="privateRegistryPort" required="false" kind="integer" category="Registry"/>
     </type>
 
     <type type="docker.Container" extends="generic.Container">
@@ -46,6 +46,8 @@
         <property name="memory" required="false" category="Advanced"/>
         <property name="workDirectory" required="false" kind="boolean" default="false" category="Advanced"/>
         <property name="removeOnExit" description="Automatically remove the container when it exits" kind="boolean" default="false" required="false"
+                  category="Advanced"/>
+        <property name="dumpLogsAfterStartup" kind="boolean" default="true" description="Generate a step to dump log after start up the container"
                   category="Advanced"/>
     </type>
 
