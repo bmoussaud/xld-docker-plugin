@@ -113,7 +113,7 @@
         </steps>
     </rule>
 
-
+    <!--
     <rule name="docker.Volume.Create" scope="deployed">
         <conditions>
             <type>docker.DeployedFolderVolume</type>
@@ -146,6 +146,8 @@
             </delete>
         </steps>
     </rule>
+
+    -->
 
     <rule name="docker.stop.start.on.modified.volumes" scope="plan">
         <planning-script-path>docker/planning/start-stop-container-on-modified-volumes.py</planning-script-path>

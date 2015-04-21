@@ -74,8 +74,16 @@
         <property name="containerPort" kind="integer"/>
     </type>
 
-    <type type="docker.DeployedFolderVolume" extends="udm.BaseDeployedArtifact" deployable-type="docker.Folder" container-type="docker.Machine">
+    <type type="docker.DataFolderVolume" extends="udm.BaseDeployedArtifact" deployable-type="docker.Folder" container-type="docker.Machine">
         <generate-deployable type="docker.Folder" extends="udm.BaseDeployableFolderArtifact"/>
+        <property name="image" default="busybox"/>
+        <property name="targetPath"/>
+    </type>
+
+    <type type="docker.DataFileVolume" extends="udm.BaseDeployedArtifact" deployable-type="docker.File" container-type="docker.Machine">
+        <generate-deployable type="docker.File" extends="udm.BaseDeployableFileArtifact"/>
+        <property name="image" default="busybox"/>
+        <property name="targetPath"/>
     </type>
 
     <type type="docker.ComposedContainers" extends="udm.BaseDeployedArtifact" deployable-type="docker.ComposeFile" container-type="docker.Machine">
