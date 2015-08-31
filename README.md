@@ -73,9 +73,10 @@ Add `EXTRA_ARGS='--insecure-registry <IP_MACHINE>:5000` to the EXTRA_ARGS line
 * Adminstration Jenkin: define the XLD Configuration using
   http://10.0.2.2:4516 (super host address when using VirtualBox)
 
-* Maven Job
+* Maven Job PetDocker
 * Git : https://github.com/bmoussaud/xld-petclinic-tomcat.git
 * Branch: docker
+* Build: clean package
 * Commands after build
 ```
 cp ${WORKSPACE}/PetClinic/target/PetClinic.war $WORKSPACE/docker/petclinic/PetClinic.war

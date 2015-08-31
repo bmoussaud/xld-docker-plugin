@@ -20,4 +20,6 @@ ADD jenkins-init.sh /usr/local/bin/jenkins-init.sh
 
 VOLUME ["/var/jenkins_home"]
 
+ENV JAVA_OPTS -Djava.security.egd=file:/dev/./urandom
+
 ENTRYPOINT ["/usr/local/bin/jenkins-init.sh"]
