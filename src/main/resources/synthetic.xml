@@ -12,10 +12,7 @@
 <synthetic xsi:schemaLocation="http://www.xebialabs.com/deployit/synthetic synthetic.xsd" xmlns="http://www.xebialabs.com/deployit/synthetic"
            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 
-    <type type="docker.Machine" extends="overthere.SshHost">
-        <property name="os" default="UNIX" kind="enum" enum-class="com.xebialabs.overthere.OperatingSystemFamily"/>
-        <property name="username" default="docker"/>
-        <property name="address" default="localhost"/>
+    <type type="docker.Machine" extends="generic.Container">
         <property name="tls_verify" default="true" kind="boolean" required="false"/>
         <property name="provider" default="virtualbox"/>
         <property name="volumeDirectory" default="/opt/docker/volumes" category="Volumes"/>
@@ -24,7 +21,7 @@
     </type>
 
     <type type="docker.Container" extends="generic.Container">
-        <property name="host" kind="ci" referenced-type="docker.Machine" as-containment="true"/>
+
         <property name="image"/>
         <property name="volumeDirectory" default="/opt/docker/volumes"/>
         <method name="logs" delegate="shellScript" script="docker/log" task-description="Docker logs"/>
@@ -144,6 +141,5 @@
         <property name="executorScript" hidden="true" default="docker/${deployed.container.clientWrapperScript}"/>
     </type>
     <!-- /MySQL Database -->
-
 
 </synthetic>
