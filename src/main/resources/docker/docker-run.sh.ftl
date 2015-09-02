@@ -10,6 +10,9 @@ echo "Running ${deployed.id}"
 <#if (deployed.publishAllExposedPorts)>
     <#assign cmdLine = cmdLine + ["-P"]/>
 </#if>
+<#if (deployed.restartAlways)>
+    <#assign cmdLine = cmdLine + ["--restart=always"]/>
+</#if>
 <#if (deployed.memory??)>
     <#assign cmdLine = cmdLine + ["--memory ${deployed.memory}" ]/>
 </#if>

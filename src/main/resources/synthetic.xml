@@ -21,7 +21,6 @@
     </type>
 
     <type type="docker.Container" extends="generic.Container">
-
         <property name="image"/>
         <property name="volumeDirectory" default="/opt/docker/volumes"/>
         <method name="logs" delegate="shellScript" script="docker/log" task-description="Docker logs"/>
@@ -45,6 +44,8 @@
         <property name="removeOnExit" description="Automatically remove the container when it exits" kind="boolean" default="false" required="false"
                   category="Advanced"/>
         <property name="dumpLogsAfterStartup" kind="boolean" default="true" description="Generate a step to dump log after start up the container"
+                  category="Advanced"/>
+        <property name="restartAlways" kind="boolean" default="false" description="Restart policy : Always"
                   category="Advanced"/>
     </type>
 
