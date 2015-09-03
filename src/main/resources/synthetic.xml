@@ -99,7 +99,7 @@
 
     <!-- smoke test -->
     <type type="smoketest.DockerRunner" extends="docker.Container">
-        <property name="image" default="cmfatih/ubuntu"/>
+        <property name="image" default="konne/ubuntu-wget"/>
         <property name="powershellInstalled" kind="boolean" default="true" required="false" hidden="true"
                   description="Enable to indicate Powershell (V3+) installed on the host associated to the Runner"/>
     </type>
