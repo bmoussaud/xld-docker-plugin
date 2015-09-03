@@ -5,3 +5,5 @@ build/
 *.iws
 PetDocker/dar/deployit-manifest.xml
 PetDocker/PetDocker-*.dar
+Environments/
+Dockerfiles/

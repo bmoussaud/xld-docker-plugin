@@ -106,5 +106,9 @@ Notes:
 * http://www.activestate.com/blog/2014/01/deploying-your-own-private-docker-registry
 * ..
 
+# NEW SETUP #
 
+1. Create a new Cloud Template `registry template` in new Env called `SF`
+* (optional)Add a smoke test runner 
+2. Deploy `Registry/2.0` to env 
 
