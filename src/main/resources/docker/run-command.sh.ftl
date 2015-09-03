@@ -13,7 +13,7 @@
 <#if (deployed.entryPoint??)>
 <#assign cmdLine = cmdLine + ["--entrypoint '${deployed.entryPoint}'"]/>
 </#if>
-<#assign cmdLine = cmdLine + ["${deployed.container.image}"]/>
+<#assign cmdLine = cmdLine + ["${deployed.image}"]/>
 <#assign cmdLine = cmdLine + ["-c"]/>
 <#assign cmdLine = cmdLine + ['"bash /tmp/xebialabs/${script}.sh"']/>
 

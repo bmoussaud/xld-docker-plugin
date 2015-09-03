@@ -5,8 +5,8 @@
     FOR A PARTICULAR PURPOSE. THIS CODE AND INFORMATION ARE NOT SUPPORTED BY XEBIALABS.
 
 -->
-echo docker pull ${deployed.container.privateRegistryAddress}:${deployed.container.privateRegistryPort}/${deployed.image}
-docker pull ${deployed.container.privateRegistryAddress}:${deployed.container.privateRegistryPort}/${deployed.image}
+echo docker pull ${registryHost}:${registryPort}/${deployed.image}
+docker pull ${registryHost}:${registryPort}/${deployed.image}
 
-echo docker tag -f ${deployed.container.privateRegistryAddress}:${deployed.container.privateRegistryPort}/${deployed.image} ${deployed.image}
-docker tag -f ${deployed.container.privateRegistryAddress}:${deployed.container.privateRegistryPort}/${deployed.image} ${deployed.image}
+echo docker tag -f ${registryHost}:${registryPort}/${deployed.image} ${deployed.image}
+docker tag -f ${registryHost}:${registryPort}/${deployed.image} ${deployed.image}

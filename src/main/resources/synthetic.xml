@@ -16,8 +16,6 @@
         <property name="tls_verify" default="true" kind="boolean" required="false"/>
         <property name="provider" default="virtualbox"/>
         <property name="volumeDirectory" default="/opt/docker/volumes" category="Volumes"/>
-        <property name="privateRegistryAddress" required="false" category="Registry"/>
-        <property name="privateRegistryPort" required="false" kind="integer" category="Registry"/>
     </type>
 
     <type type="docker.Container" extends="generic.Container">
@@ -47,6 +45,8 @@
                   category="Advanced"/>
         <property name="restartAlways" kind="boolean" default="false" description="Restart policy : Always"
                   category="Advanced"/>
+        <property name="registryHost" required="false" category="Registry"/>
+        <property name="registryPort" required="false" kind="integer" default="5000" category="Registry"/>
     </type>
 
     <type-modification type="docker.Image">
@@ -99,13 +99,13 @@
 
     <!-- smoke test -->
     <type type="smoketest.DockerRunner" extends="docker.Container">
-        <property name="image" default="konne/ubuntu-wget"/>
         <property name="powershellInstalled" kind="boolean" default="true" required="false" hidden="true"
                   description="Enable to indicate Powershell (V3+) installed on the host associated to the Runner"/>
     </type>
 
     <type type="smoketest.ExecutedDockerizedHttpRequestTest" extends="udm.BaseDeployed"
           container-type="smoketest.DockerRunner" deployable-type="smoketest.HttpRequestTest">
+        <property name="image" default="konne/ubuntu-wget"/>
         <property name="links" kind="set_of_string" required="false" category="Network"/>
 
         <property name="url" description="The URL to test"/>
@@ -123,6 +123,8 @@
         <property name="retryWaitInterval" kind="integer" default="5" category="Options" description="Time in seconds to wait before next retry"/>
         <property name="timeout" kind="integer" default="30" category="Options" description="Timeout in seconds for a query on the specified url"/>
         <property name="entryPoint" required="false" default="/bin/bash" hidden="true"/>
+        <property name="registryHost" required="false" category="Registry"/>
+        <property name="registryPort" required="false" kind="integer" default="5000" category="Registry"/>
     </type>
 
     <type-modification type="smoketest.HttpRequestTest">
