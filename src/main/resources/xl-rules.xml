@@ -135,12 +135,30 @@
         </steps>
     </rule>
 
-
-    <rule name="docker.DataVolume.Create" scope="deployed">
+    <rule name="docker.DataVolume.Create.fs" scope="deployed">
         <conditions>
             <type>docker.DataFileVolume</type>
             <operation>CREATE</operation>
             <operation>MODIFY</operation>
+            <expression>deployed.useContainerToStoreContent is False</expression>
+        </conditions>
+        <steps>
+            <upload>
+                <description expression="true">"Upload the '%s' artifact to '%s'" % (deployed.name, deployed.container.name)</description>
+                <target-path expression="true">deployed.targetPath</target-path>
+                <create-target-path>true</create-target-path>
+                <order>55</order>
+            </upload>
+        </steps>
+    </rule>
+
+
+    <rule name="docker.DataVolume.Create.container" scope="deployed">
+        <conditions>
+            <type>docker.DataFileVolume</type>
+            <operation>CREATE</operation>
+            <operation>MODIFY</operation>
+            <expression>deployed.useContainerToStoreContent is True</expression>
         </conditions>
         <steps>
             <os-script>
@@ -159,11 +177,12 @@
         </steps>
     </rule>
 
-    <rule name="docker.DataVolume.DESTROY" scope="deployed">
+    <rule name="docker.DataVolume.DESTROY.container" scope="deployed">
         <conditions>
             <type>docker.DataFileVolume</type>
             <operation>MODIFY</operation>
             <operation>DESTROY</operation>
+            <expression>previousDeployed.useContainerToStoreContent is True</expression>
         </conditions>
         <steps>
             <os-script>

@@ -82,6 +82,7 @@
         <generate-deployable type="docker.File" extends="udm.BaseDeployableFileArtifact"/>
         <property name="image" default="busybox"/>
         <property name="targetPath"/>
+        <property name="useContainerToStoreContent" kind="boolean" default="false" required="false"/>
     </type>
 
     <type type="docker.ComposedContainers" extends="udm.BaseDeployedArtifact" deployable-type="docker.ComposeFile" container-type="docker.Machine">
