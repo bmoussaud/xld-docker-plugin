@@ -28,6 +28,9 @@ echo "Running ${deployed.id}"
 <#list deployed.volumesFrom as volume>
     <#assign cmdLine = cmdLine + ["--volumes-from=${volume}"]/>
 </#list>
+<#list deployed.variables as variable>
+    <#assign cmdLine = cmdLine + ["-e \"${variable.name}=${variable.value}\""]/>
+</#list>
 
 <#assign cmdLine = cmdLine + ["--name ${deployed.name}"]/>
 <#assign cmdLine = cmdLine + ["${deployed.image}"]/>

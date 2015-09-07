@@ -36,6 +36,7 @@
         <property name="links" kind="set_of_ci" referenced-type="docker.Link" as-containment="true" required="false" category="Network"/>
         <property name="volumes" kind="set_of_ci" referenced-type="docker.Volume" as-containment="true" required="false" category="Volumes"/>
         <property name="volumesFrom" kind="set_of_string" required="false" category="Volumes"/>
+        <property name="variables" kind="set_of_ci" referenced-type="docker.EnvironmentVariable" as-containment="true" required="false" category="Variables"/>
         <property name="extendedPrivileges" kind="boolean" required="false" default="false" category="Advanced"/>
         <property name="memory" required="false" category="Advanced"/>
         <property name="workDirectory" required="false" kind="boolean" default="false" category="Advanced"/>
@@ -53,6 +54,7 @@
         <property name="ports" kind="set_of_ci" referenced-type="docker.PortSpec" as-containment="true" required="false" category="Network"/>
         <property name="links" kind="set_of_ci" referenced-type="docker.LinkSpec" as-containment="true" required="false" category="Network"/>
         <property name="volumes" kind="set_of_ci" referenced-type="docker.VolumeSpec" as-containment="true" required="false" category="Volumes"/>
+        <property name="variables" kind="set_of_ci" referenced-type="docker.EnvironmentVariableSpec" as-containment="true" required="false" category="Variables"/>
     </type-modification>
 
     <type type="docker.Volume" deployable-type="docker.VolumeSpec" container-type="docker.RunContainer" extends="udm.BaseEmbeddedDeployed">
@@ -70,6 +72,11 @@
         <generate-deployable type="docker.PortSpec" extends="udm.BaseEmbeddedDeployable"/>
         <property name="hostPort" required="false" kind="integer"/>
         <property name="containerPort" kind="integer"/>
+    </type>
+
+    <type type="docker.EnvironmentVariable" deployable-type="docker.EnvironmentVariableSpec" container-type="docker.RunContainer" extends="udm.BaseEmbeddedDeployed">
+        <generate-deployable type="docker.EnvironmentVariableSpec" extends="udm.BaseEmbeddedDeployable"/>
+        <property name="value"/>
     </type>
 
     <type type="docker.DataFolderVolume" extends="udm.BaseDeployedArtifact" deployable-type="docker.Folder" container-type="docker.Machine">
