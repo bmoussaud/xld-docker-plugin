@@ -4,7 +4,6 @@
 # FOR A PARTICULAR PURPOSE. THIS CODE AND INFORMATION ARE NOT SUPPORTED BY XEBIALABS.
 #
 
-
 def stop_start_docker_container(docker_container):
     if docker_container is None:
         return
@@ -22,20 +21,33 @@ def stop_start_docker_container(docker_container):
         freemarker_context={'name': docker_container.name},
         target_host=docker_container.container.host))
 
-def docker_run_containers():
-    return map(lambda x: x.deployedOrPrevious, filter(lambda delta: delta.deployedOrPrevious.type == "docker.RunContainer" , deltas.deltas ))
+
+def containers(modify_data_volume, noop_delta_container):
+    candidates = []
+    for delta_v in modify_data_volume:
+        for delta in noop_delta_container:
+            container  = delta.deployed
+            for volume in container.volumes:
+                if volume.hostPath in delta_v.deployed.targetPath:
+                    print "Add container %s to the candidates (%s -> %s)" % (container, volume.hostPath, delta_v.deployed.targetPath)
+                    candidates.append(container)
+
+    candidates = set(candidates)
+    print "candidates %s " % candidates
+    return candidates
 
 
-def getRunContainer(d):
 
-    for deployed in docker_run_containers():
-        c_id = "%s/%s" % (deployed.id, deployed_name)
-        candidates  = filter(lambda volume: volume.id == c_id, deployed.volumes)
-        if len(candidates) > 0:
-            return deployed
-        else:
-            return None
+modify_data_volume = filter(lambda delta: delta.operation == "MODIFY" and delta.deployedOrPrevious.type == "docker.DataFileVolume", deltas.deltas)
+print "modify_data_volume %s " % modify_data_volume
 
-docker_containers = set(map(getRunContainer,filter(lambda delta: delta.operation == "MODIFY" and delta.deployedOrPrevious.type == "docker.DeployedFolderVolume", deltas.deltas)))
-map(stop_start_docker_container, docker_containers)
+noop_delta_container = filter(lambda delta: delta.operation == "NOOP" and delta.deployedOrPrevious.type == "docker.RunContainer", deltas.deltas)
+print "noop_delta_container %s " % noop_delta_container
+
+candidates = containers(modify_data_volume, noop_delta_container)
+print "candidates %s " % candidates
+
+map(stop_start_docker_container, candidates)
+
+
 
