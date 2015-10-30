@@ -5,5 +5,11 @@
     FOR A PARTICULAR PURPOSE. THIS CODE AND INFORMATION ARE NOT SUPPORTED BY XEBIALABS.
 
 -->
-echo docker pull ${deployed.image}
-docker pull ${deployed.image}
+if docker inspect ${deployed.image} > /dev/null ; then
+ echo "${deployed.image} exists on the machine"
+else
+ echo docker pull ${deployed.image}
+ docker pull ${deployed.image}
+fi
+
+
