@@ -113,7 +113,7 @@
 
     <type type="smoketest.ExecutedDockerizedHttpRequestTest" extends="udm.BaseDeployed"
           container-type="smoketest.DockerRunner" deployable-type="smoketest.HttpRequestTest">
-        <property name="image" default="konne/ubuntu-wget"/>
+        <property name="image" default="bmoussaud/ubuntu-wget"/>
         <property name="links" kind="set_of_string" required="false" category="Network"/>
 
         <property name="url" description="The URL to test"/>
