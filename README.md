@@ -107,4 +107,5 @@ The following table describes the effect a deployed has on its container.
 |----------|--------|---------|--------|
 | docker.RunContainer| Pull the container image, Start the container | Stop the container, Remove the container | Stop the container, Remove the container, Pull the container image, Start the container  |
 | docker.DataFileVolume| Copy the file to the remote location | Delete the file from the remote location | Delete the file from the remote location, Copy the file to the remote location|
-| docker.DataFolderVolume| Copy the folder to the remote location - or - creata a new image with the data| Delete the folder from the remote location -  or - delete the data container | Delete the folder from the remote location, Copy the folder to the remote location - or - delete the data container, create the new data container |
+| docker.DataFolderVolume| Copy the folder to the remote location - *or* - create a new image with the data| Delete the folder from the remote location - *or* - delete the data container | Delete the folder from the remote location, Copy the folder to the remote location - *or* - delete the data container, create the new data container |
+
