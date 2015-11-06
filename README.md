@@ -11,7 +11,20 @@ Dependencies:
 
 # Sample Applications #
 * XL Deploy Docker Sample Application https://github.com/bmoussaud/xld-petclinic-docker
-* XL Deploy Docker Microservice Sample Application https://github.com/bmoussaud/xld-micropet-docker
+* XL Deploy Docker MicroService Sample Application https://github.com/bmoussaud/xld-micropet-docker
+
+# Docker RunContainer Configuration #
+
+A `docker.RunContainer` may be configured with with Embedded Deployeds:
+* `docker.EnvironmentVariable` to configure environment variable (name,value)
+* `docker.Port` to configure the exposed ports
+* `docker.Link` to configure on which other containers the container should be linked with
+* `docker.Volume` to configure the volumes the container should use (hostPath:containerPath)
+
+
+# Integration with a Docker Registry #
+
+A docker registry can be set up on each `dockerRunContainer` ci using the property `Registry Host`. If the property is blank no registry is used. If it isn't blank the images will be pulled from the Docker Registry and tagged locally.
 
 
 # Usage in Deployment Packages #
