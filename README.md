@@ -24,7 +24,10 @@ A `docker.RunContainer` may be configured with with Embedded Deployeds:
 
 # Integration with a Docker Registry #
 
-A docker registry can be set up on each `dockerRunContainer` ci using the property `Registry Host`. If the property is blank no registry is used. If it isn't blank the images will be pulled from the Docker Registry and tagged locally.
+A docker registry can be set up on each `docker.RunContainer` ci using the property `Registry Host` & `Registry Port`:
+
+* If the property is blank no registry is used. 
+* If it is not blank, the images will be pulled from the Docker Registry and tagged locally.
 
 
 # Usage in Deployment Packages #
