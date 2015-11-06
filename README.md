@@ -1,6 +1,6 @@
 # Overview #
 
-The Docker plugin is a XL Deploy plugin that adds capability for deploying applications to a Docker container.
+The Docker plugin is a XL Deploy plugin that adds capability for deploying Docker Images to Docker Machines
 
 # Installation #
 
