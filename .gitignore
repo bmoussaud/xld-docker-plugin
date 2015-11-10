@@ -7,3 +7,4 @@ PetDocker/dar/deployit-manifest.xml
 PetDocker/PetDocker-*.dar
 Environments/
 Dockerfiles/
+out/

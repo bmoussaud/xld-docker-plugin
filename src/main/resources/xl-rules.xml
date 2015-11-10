@@ -207,4 +207,96 @@
     <rule name="docker.stop.start.on.modified.volumes" scope="plan">
         <planning-script-path>docker/planning/start-stop-container-on-modified-volumes.py</planning-script-path>
     </rule>
+
+
+    <!-- Docker Compose -->
+    <rule name="docker.compose.up" scope="deployed">
+        <conditions>
+            <type>docker.ComposedContainers</type>
+            <operation>CREATE</operation>
+            <operation>MODIFY</operation>
+        </conditions>
+        <steps>
+            <os-script>
+                <description expression="true">"Execute docker-compose up '%s' on '%s' " % (deployed.name,deployed.container.name)</description>
+                <order>65</order>
+                <script>docker-compose/up</script>
+                <target-host expression="true">deployed.container.gateway</target-host>
+                <freemarker-context>
+                    <target expression="true">deployed</target>
+                    <application expression="true">deployedApplication.name</application>
+                </freemarker-context>
+            </os-script>
+        </steps>
+    </rule>
+
+    <rule name="docker.compose.stop" scope="deployed">
+        <conditions>
+            <type>docker.ComposedContainers</type>
+            <operation>MODIFY</operation>
+            <operation>DESTROY</operation>
+        </conditions>
+        <steps>
+            <os-script>
+                <description expression="true">"Execute docker-compose stop '%s' file on '%s'" % (previousDeployed.name, previousDeployed.container.name)
+                </description>
+                <order>35</order>
+                <script>docker-compose/stop</script>
+                <target-host expression="true">previousDeployed.container.gateway</target-host>
+                <freemarker-context>
+                    <target expression="true">previousDeployed</target>
+                    <application expression="true">previousDeployedApplication.name</application>
+                </freemarker-context>
+            </os-script>
+        </steps>
+    </rule>
+
+    <rule name="docker.compose.remove" scope="deployed">
+        <conditions>
+            <type>docker.ComposedContainers</type>
+            <operation>MODIFY</operation>
+            <operation>DESTROY</operation>
+        </conditions>
+        <steps>
+            <os-script>
+                <description expression="true">"Execute docker-compose remove '%s' file on '%s'" % (previousDeployed.name, previousDeployed.container.name)
+                </description>
+                <order>36</order>
+                <script>docker-compose/rm</script>
+                <target-host expression="true">previousDeployed.container.gateway</target-host>
+                <freemarker-context>
+                    <target expression="true">previousDeployed</target>
+                    <application expression="true">previousDeployedApplication.name</application>
+                </freemarker-context>
+            </os-script>
+        </steps>
+    </rule>
+
+
+    <rule name="docker.compose.logs" scope="deployed">
+        <conditions>
+            <type>docker.ComposedContainers</type>
+            <operation>CREATE</operation>
+            <operation>MODIFY</operation>
+            <expression>deployed.dumpLogsAfterStartup</expression>
+        </conditions>
+        <steps>
+            <wait>
+                <order>67</order>
+                <description expression="true">"Waiting for 20 seconds"</description>
+                <seconds>20</seconds>
+            </wait>
+            <os-script>
+                <description expression="true">"Dump the logs of composed containers '%s'" % (deployed.name)</description>
+                <order>67</order>
+                <script>docker-compose/logs</script>
+                <target-host expression="true">deployed.container.gateway</target-host>
+                <freemarker-context>
+                    <target expression="true">deployed</target>
+                    <application expression="true">deployedApplication.name</application>
+                </freemarker-context>
+            </os-script>
+        </steps>
+    </rule>
+    <!-- / Docker Compose -->
 </rules>

@@ -1,6 +1,7 @@
 # Overview #
 
-The Docker plugin is a XL Deploy plugin that adds capability for deploying Docker Images to Docker Machines.
+The Docker plugin is a XL Deploy plugin that adds capability for deploying Docker Images to Docker Machines. 
+It manages also to deploy `docker-compose`files directly or to import them to turn them into `Docker.Images`.
 
 # Installation #
 
@@ -17,7 +18,7 @@ Dependencies:
 
 # Docker RunContainer Configuration #
 
-A `docker.RunContainer` may be configured with with Embedded Deployeds:
+A `docker.RunContainer` may be configured with with Embedded deployeds:
 * `docker.EnvironmentVariable` to configure environment variable (name,value)
 * `docker.Port` to configure the exposed ports
 * `docker.Link` to configure on which other containers the container should be linked with
@@ -117,6 +118,19 @@ Please refer to Packaging Manual for more details about the DAR packaging format
 
 ```
 
+# Deployable vs. Container Table  #
+
+The following table describes which deployable / container combinations are possible.
+| Deployables | Containers | Generated Deployed
+|----------|--------|---------|--------|
+| docker.Image | docker.Machine | docker.RunContainer |
+| docker.Folder | docker.Machine | docker.DataFolderVolume |
+| docker.File | docker.Machine | docker.DataFileVolume |
+| docker.ComposeFile | docker.Machine | docker.ComposedContainers |
+| smoketest.HttpRequestTest | smoketest.DockerRunner | smoketest.ExecutedDockerizedHttpRequestTest (experimental)|
+| sql.SqlScripts |sql.DockerMySqlClient | sql.DockerizedExecutedSqlScripts (experimental) |
+
+
 # Deployed Actions Table  #
 
 The following table describes the effect a deployed has on its container.
@@ -126,4 +140,10 @@ The following table describes the effect a deployed has on its container.
 | docker.RunContainer| Pull the container image, Start the container | Stop the container, Remove the container | Stop the container, Remove the container, Pull the container image, Start the container  |
 | docker.DataFileVolume| Copy the file to the remote location | Delete the file from the remote location | Delete the file from the remote location, Copy the file to the remote location|
 | docker.DataFolderVolume| Copy the folder to the remote location - *or* - create a new image with the data| Delete the folder from the remote location - *or* - delete the data container | Delete the folder from the remote location, Copy the folder to the remote location - *or* - delete the data container, create the new data container |
+| docker.ComposeFile| `docker-compose up`| `docker-compose stop && docker-compose rm`  | `docker-compose stop && docker-compose rm` and `docker-compose up` |
+
+
+# Docker Compose File Importer #
+
+`docker-compose`  is a great tool but it looks like a black-box. The Docker Compose file importer allows to push `docker-compose`YAML file and to turn these information into `docker.Images` defined in the plugin.
 
