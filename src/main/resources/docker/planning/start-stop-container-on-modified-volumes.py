@@ -26,7 +26,7 @@ def containers(modify_data_volume, noop_delta_container):
     candidates = []
     for delta_v in modify_data_volume:
         for delta in noop_delta_container:
-            container  = delta.deployed
+            container = delta.deployed
             for volume in container.volumes:
                 if volume.hostPath in delta_v.deployed.targetPath:
                     print "Add container %s to the candidates (%s -> %s)" % (container, volume.hostPath, delta_v.deployed.targetPath)
@@ -35,7 +35,6 @@ def containers(modify_data_volume, noop_delta_container):
     candidates = set(candidates)
     print "candidates %s " % candidates
     return candidates
-
 
 
 modify_data_volume = filter(lambda delta: delta.operation == "MODIFY" and delta.deployedOrPrevious.type == "docker.DataFileVolume", deltas.deltas)
@@ -48,6 +47,3 @@ candidates = containers(modify_data_volume, noop_delta_container)
 print "candidates %s " % candidates
 
 map(stop_start_docker_container, candidates)
-
-
-
