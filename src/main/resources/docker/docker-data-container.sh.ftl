@@ -5,6 +5,7 @@
     FOR A PARTICULAR PURPOSE. THIS CODE AND INFORMATION ARE NOT SUPPORTED BY XEBIALABS.
 
 -->
+<#include "/docker/setup-docker.ftl">
 echo "Docker Create Data Container"
 echo docker run --name "${deployed.name}" ${deployed.name}
 docker run --name "${deployed.name}" ${deployed.name}

@@ -5,6 +5,7 @@
     FOR A PARTICULAR PURPOSE. THIS CODE AND INFORMATION ARE NOT SUPPORTED BY XEBIALABS.
 
 -->
+<#include "/docker/setup-docker.ftl">
 echo "Running ${deployed.id}"
 <#assign cmdLine = ["docker", "run","-d"] />
 <#if (deployed.publishAllExposedPorts)>

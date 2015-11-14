@@ -5,6 +5,7 @@
     FOR A PARTICULAR PURPOSE. THIS CODE AND INFORMATION ARE NOT SUPPORTED BY XEBIALABS.
 
 -->
+<#include "/docker/setup-docker.ftl">
 echo docker pull ${registryHost}:${registryPort}/${deployed.image}
 docker pull ${registryHost}:${registryPort}/${deployed.image}
 

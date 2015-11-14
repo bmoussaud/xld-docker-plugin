@@ -5,5 +5,6 @@
     FOR A PARTICULAR PURPOSE. THIS CODE AND INFORMATION ARE NOT SUPPORTED BY XEBIALABS.
 
 -->
+<#include "/docker/setup-docker.ftl">
 echo "Start the container ${name}"
 docker start ${name}

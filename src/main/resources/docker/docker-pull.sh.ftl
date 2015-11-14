@@ -5,6 +5,7 @@
     FOR A PARTICULAR PURPOSE. THIS CODE AND INFORMATION ARE NOT SUPPORTED BY XEBIALABS.
 
 -->
+<#include "/docker/setup-docker.ftl">
 if docker inspect ${deployed.image} > /dev/null ; then
  echo "${deployed.image} exists on the machine"
 else

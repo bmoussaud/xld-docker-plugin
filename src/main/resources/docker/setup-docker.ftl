@@ -6,6 +6,6 @@
 
 -->
 export DOCKER_TLS_VERIFY="${target.container.tls_verify?string('1', '0')}"
-export DOCKER_HOST="tcp://${target.container.host.address}:${target.container.port}"
-export DOCKER_CERT_PATH="${target.container.host.privateKeyFile?remove_ending("/id_rsa")}"
+export DOCKER_HOST="tcp://${target.container.address}:${target.container.port}"
+export DOCKER_CERT_PATH="${target.container.certificatePath}"
 

@@ -5,7 +5,7 @@
     FOR A PARTICULAR PURPOSE. THIS CODE AND INFORMATION ARE NOT SUPPORTED BY XEBIALABS.
 
 -->
-<#include "/docker-compose/setup-docker.ftl">
+<#include "/docker/setup-docker.ftl">
 <#include "/docker-compose/setup-application.ftl">
 
 docker-compose  stop

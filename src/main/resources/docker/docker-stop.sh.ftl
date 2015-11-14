@@ -5,5 +5,6 @@
     FOR A PARTICULAR PURPOSE. THIS CODE AND INFORMATION ARE NOT SUPPORTED BY XEBIALABS.
 
 -->
+<#include "/docker/setup-docker.ftl">
 echo "Stop the container ${name}, kill it after 10 seconds"
 docker stop --time=10 ${name}

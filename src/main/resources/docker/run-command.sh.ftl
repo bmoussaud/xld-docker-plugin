@@ -5,6 +5,7 @@
     FOR A PARTICULAR PURPOSE. THIS CODE AND INFORMATION ARE NOT SUPPORTED BY XEBIALABS.
 
 -->
+<#include "/docker/setup-docker.ftl">
 <#assign cmdLine = ["docker", "run","-t","--rm"] />
 <#assign cmdLine = cmdLine + ["-v `pwd`:/tmp/xebialabs"]/>
 <#list deployed.links as link>
