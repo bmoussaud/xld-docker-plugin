@@ -62,7 +62,6 @@
 
     <type type="docker.Volume" deployable-type="docker.VolumeSpec" container-type="docker.RunContainer" extends="udm.BaseEmbeddedDeployed">
         <generate-deployable type="docker.VolumeSpec" extends="udm.BaseEmbeddedDeployable"/>
-        <property name="hostPath" required="false"/>
         <property name="containerPath"/>
     </type>
 
@@ -85,15 +84,16 @@
 
     <type type="docker.DataFolderVolume" extends="udm.BaseDeployedArtifact" deployable-type="docker.Folder" container-type="docker.Machine">
         <generate-deployable type="docker.Folder" extends="udm.BaseDeployableFolderArtifact"/>
-        <property name="image" default="busybox"/>
-        <property name="targetPath"/>
+        <property name="volumeName"/>
+        <property name="containerName"/>
+        <property name="containerPath"/>
     </type>
 
     <type type="docker.DataFileVolume" extends="udm.BaseDeployedArtifact" deployable-type="docker.File" container-type="docker.Machine">
         <generate-deployable type="docker.File" extends="udm.BaseDeployableFileArtifact"/>
-        <property name="image" default="busybox"/>
-        <property name="targetPath"/>
-        <property name="useContainerToStoreContent" kind="boolean" default="false" required="false"/>
+        <property name="volumeName"/>
+        <property name="containerName"/>
+        <property name="containerPath"/>
     </type>
 
     <type type="docker.ComposedContainers" extends="udm.BaseDeployedArtifact" deployable-type="docker.ComposeFile" container-type="docker.Machine">

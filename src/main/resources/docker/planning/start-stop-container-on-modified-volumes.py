@@ -27,14 +27,11 @@ def containers(modify_data_volume, noop_delta_container):
     for delta_v in modify_data_volume:
         for delta in noop_delta_container:
             container = delta.deployed
-            for volume in container.volumes:
-                if volume.hostPath in delta_v.deployed.targetPath:
-                    print "Add container %s to the candidates (%s -> %s)" % (container, volume.hostPath, delta_v.deployed.targetPath)
-                    candidates.append(container)
+            if container.name == delta_v.deployedOrPrevious.containerName:
+                print "Add container %s to the candidates " % container
+                candidates.append(container)
 
-    candidates = set(candidates)
-    print "candidates %s " % candidates
-    return candidates
+    return set(candidates)
 
 
 modify_data_volume = filter(lambda delta: delta.operation == "MODIFY" and delta.deployedOrPrevious.type == "docker.DataFileVolume", deltas.deltas)

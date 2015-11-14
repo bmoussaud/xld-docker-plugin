@@ -147,3 +147,12 @@ The following table describes the effect a deployed has on its container.
 
 `docker-compose`  is a great tool but it looks like a black-box. The Docker Compose file importer allows to push `docker-compose`YAML file and to turn these information into `docker.Images` defined in the plugin.
 
+docker volume create --name petclinic-config
+docker cp /tmp/toto.properties petclinic:/application/properties
+
+docker create -p 8888:8080 --link=petclinic-backend:petclinic-backend -v petclinic-config:/application/properties -e loglevel=DEBUG --name petclinic petportal/petclinic:3.1-20150611154030
+
+docker run -d --name petclinic-backend petportal/petclinic-backend:1.1-20150611154030
+docker run -d -p 8888:8080 --link=petclinic-backend:petclinic-backend -v /home/docker/volumes/petportal:/application/properties -e loglevel=DEBUG --name petclinic petportal/petclinic:3.1-20150611154030
+docker run -d -p 80:80 -p 1936:1936 -e BACKENDS=192.168.99.103:8888 --name ha-proxy eeacms/haproxy:latest
+

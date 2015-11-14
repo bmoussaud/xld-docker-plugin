@@ -135,79 +135,62 @@
         </steps>
     </rule>
 
-    <rule name="docker.DataVolume.Create.fs" scope="deployed">
+    <!-- Volumes -->
+    <rule name="docker.volume.create" scope="deployed">
         <conditions>
             <type>docker.DataFileVolume</type>
             <operation>CREATE</operation>
-            <operation>MODIFY</operation>
-            <expression>deployed.useContainerToStoreContent is False</expression>
-        </conditions>
-        <steps>
-            <upload>
-                <description expression="true">"Upload the '%s' artifact to '%s'" % (deployed.name, deployed.container.name)</description>
-                <target-path expression="true">deployed.targetPath</target-path>
-                <create-target-path>true</create-target-path>
-                <order>55</order>
-            </upload>
-        </steps>
-    </rule>
-
-
-    <rule name="docker.DataVolume.Create.container" scope="deployed">
-        <conditions>
-            <type>docker.DataFileVolume</type>
-            <operation>CREATE</operation>
-            <operation>MODIFY</operation>
-            <expression>deployed.useContainerToStoreContent is True</expression>
         </conditions>
         <steps>
             <os-script>
-                <description expression="true">"Create the '%s' data volume image" % (deployed.name)</description>
-                <order>55</order>
-                <script>docker/docker-data-image</script>
-                <classpath-resources>
-                    <value>docker/volume/Dockerfile.ftl</value>
-                </classpath-resources>
-            </os-script>
-            <os-script>
-                <description expression="true">"Create the '%s' data volume container" % (deployed.name)</description>
-                <order>55</order>
-                <script>docker/docker-data-container</script>
+                <description expression="true">"Create the docker volume %s" % deployed.volumeName</description>
+                <order>57</order>
+                <script>docker/volume-create</script>
+                <freemarker-context>
+                    <volumeName expression="true">deployed.volumeName</volumeName>
+                </freemarker-context>
             </os-script>
         </steps>
     </rule>
 
-    <rule name="docker.DataVolume.DESTROY.container" scope="deployed">
+    <rule name="docker.cp.file" scope="deployed">
         <conditions>
             <type>docker.DataFileVolume</type>
+            <operation>CREATE</operation>
             <operation>MODIFY</operation>
+        </conditions>
+        <steps>
+            <os-script>
+                <description expression="true">"Copy the file '%s' to the volume '%s' mounted for '%s' " % (deployed.name, deployed.volumeName,
+                    deployed.containerName)
+                </description>
+                <order>67</order>
+                <script>docker/docker-cp</script>
+            </os-script>
+        </steps>
+    </rule>
+
+    <rule name="docker.volume.remove" scope="deployed">
+        <conditions>
+            <type>docker.DataFileVolume</type>
             <operation>DESTROY</operation>
-            <expression>previousDeployed.useContainerToStoreContent is True</expression>
         </conditions>
         <steps>
             <os-script>
-                <description expression="true">"Remove the '%s' data volume container" % (previousDeployed.name)</description>
-                <order>35</order>
-                <script>docker/docker-rm</script>
+                <description expression="true">"Remove the docker volume %s" % previousDeployed.volumeName</description>
+                <order>57</order>
+                <script>docker/volume-rm</script>
                 <freemarker-context>
-                    <name expression="true">previousDeployed.name</name>
-                </freemarker-context>
-            </os-script>
-            <os-script>
-                <description expression="true">"Remove the '%s' data volume image" % (previousDeployed.name)</description>
-                <order>35</order>
-                <script>docker/docker-rmi</script>
-                <freemarker-context>
-                    <name expression="true">previousDeployed.name</name>
+                    <volumeName expression="true">previousDeployed.volumeName</volumeName>
                 </freemarker-context>
             </os-script>
         </steps>
     </rule>
 
-    <rule name="docker.stop.start.on.modified.volumes" scope="plan">
+    <rule name="docker.stop.start.container.on.modified.volumes" scope="plan">
         <planning-script-path>docker/planning/start-stop-container-on-modified-volumes.py</planning-script-path>
     </rule>
-
+    <!-- /Volumes -->
 
     <!-- Docker Compose -->
     <rule name="docker.compose.up" scope="deployed">
