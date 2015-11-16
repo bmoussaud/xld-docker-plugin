@@ -165,8 +165,9 @@ Please refer to Packaging Manual for more details about the DAR packaging format
 # Deployable vs. Container Table  #
 
 The following table describes which deployable / container combinations are possible.
+
 | Deployables | Containers | Generated Deployed |
-|----------|--------|---------|--------|
+|-------------|------------|--------------------|
 | docker.Image | docker.Machine | docker.RunContainer |
 | docker.Folder | docker.Machine | docker.DataFolderVolume |
 | docker.File | docker.Machine | docker.DataFileVolume |
