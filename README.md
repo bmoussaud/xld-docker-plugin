@@ -88,29 +88,31 @@ Please refer to Packaging Manual for more details about the DAR packaging format
     <value>parallel-by-deployment-group</value>
   </orchestrator>
   <deployables>
-    <smoketest.HttpRequestTest name="smoke test - ha">
-      <tags />
+    
+    <smoketest.HttpRequestTest name="smoke test - ha">      
       <url>http://{{HOST_ADDRESS}}/petclinic/</url>
-      <expectedResponseText>{{title}}</expectedResponseText>
-      <headers />
-      <links />
+      <expectedResponseText>{{title}}</expectedResponseText>      
     </smoketest.HttpRequestTest>
+    
     <docker.File name="petclinic.properties" file="petclinic.properties/petclinic.properties">
       <volumeName>petclinic-config</volumeName>
       <containerName>petclinic</containerName>
       <containerPath>/application/properties</containerPath>
     </docker.File>
+    
     <docker.Image name="petclinic-backend">
       <image>petportal/petclinic-backend:1.1-20151311162015</image>
       <registryHost>{{PROJECT_REGISTRY_HOST}}</registryHost>
     </docker.Image>
+    
     <smoketest.HttpRequestTest name="smoke test">
-      <url>http://petclinic:8080/petclinic</url>
+      <url>http://{{HOST_ADDRESS}}:{{HOST_PORT}}/petclinic/</url>
       <expectedResponseText>{{title}}</expectedResponseText>
       <links>
         <value>petclinic:petclinic</value>
       </links>
     </smoketest.HttpRequestTest>
+    
     <docker.Image name="ha-proxy">
       <image>eeacms/haproxy:latest</image>
       <ports>
@@ -129,13 +131,14 @@ Please refer to Packaging Manual for more details about the DAR packaging format
         </docker.EnvironmentVariableSpec>
       </variables>
     </docker.Image>
+    
     <docker.Image name="petclinic">
       <image>petportal/petclinic:3.1-20151311162015</image>
       <volumesFrom />
       <registryHost>{{PROJECT_REGISTRY_HOST}}</registryHost>
       <ports>
         <docker.PortSpec name="petclinic/exposed-port">
-          <hostPort>8888</hostPort>
+          <hostPort>{{HOST_PORT}}</hostPort>
           <containerPort>8080</containerPort>
         </docker.PortSpec>
       </ports>
@@ -155,6 +158,7 @@ Please refer to Packaging Manual for more details about the DAR packaging format
         </docker.EnvironmentVariableSpec>
       </variables>
     </docker.Image>
+    
   </deployables>
   <applicationDependencies />
 </udm.DeploymentPackage>
