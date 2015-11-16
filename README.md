@@ -40,7 +40,7 @@ To see how to connect Docker to this machine, run: docker-machine env mydemomach
 and run the `docker-machine env` command:
 
 ```
-docker-machine env mydemomachine
+$docker-machine env mydemomachine
 export DOCKER_TLS_VERIFY="1"
 export DOCKER_HOST="tcp://192.168.99.104:2376"
 export DOCKER_CERT_PATH="/Users/bmoussaud/.docker/machine/machines/mydemomachine"
@@ -50,12 +50,12 @@ export DOCKER_CERT_PATH="/Users/bmoussaud/.docker/machine/machines/mydemomachine
 
 * create a new container `docker.Machine` in the XLDeploy Repository with the following properties
 
-** id: Infrastructure/mylocalmachine/mydemomachine
-** Type: docker.Machine
-** address: 192.168.99.104
-** port: 2376
-** tls_verify: True
-** Certificate Path: /Users/bmoussaud/.docker/machine/machines/mydemomachine
+  * id: Infrastructure/mylocalmachine/mydemomachine
+  * Type: docker.Machine
+  * address: 192.168.99.104
+  * port: 2376
+  * tls_verify: True
+  * Certificate Path: /Users/bmoussaud/.docker/machine/machines/mydemomachine
 
 And add it to an environment.
 
@@ -83,58 +83,36 @@ Please refer to Packaging Manual for more details about the DAR packaging format
 ```
 
 <?xml version="1.0" encoding="UTF-8"?>
-<udm.DeploymentPackage version="3.0-CD-20151106-164038" application="Docker/PetDocker">
+<udm.DeploymentPackage version="3.0-CD-20151113-172025" application="PetDocker">
   <orchestrator>
     <value>parallel-by-deployment-group</value>
   </orchestrator>
   <deployables>
-    
+    <smoketest.HttpRequestTest name="smoke test - ha">
+      <tags />
+      <url>http://{{HOST_ADDRESS}}/petclinic/</url>
+      <expectedResponseText>{{title}}</expectedResponseText>
+      <headers />
+      <links />
+    </smoketest.HttpRequestTest>
+    <docker.File name="petclinic.properties" file="petclinic.properties/petclinic.properties">
+      <volumeName>petclinic-config</volumeName>
+      <containerName>petclinic</containerName>
+      <containerPath>/application/properties</containerPath>
+    </docker.File>
+    <docker.Image name="petclinic-backend">
+      <image>petportal/petclinic-backend:1.1-20151311162015</image>
+      <registryHost>{{PROJECT_REGISTRY_HOST}}</registryHost>
+    </docker.Image>
     <smoketest.HttpRequestTest name="smoke test">
+      <url>http://petclinic:8080/petclinic</url>
       <expectedResponseText>{{title}}</expectedResponseText>
       <links>
         <value>petclinic:petclinic</value>
       </links>
-      <url>http://petclinic:8080/petclinic</url>
     </smoketest.HttpRequestTest>
-    
-    <smoketest.HttpRequestTest name="smoke test - ha">
-      <expectedResponseText>{{title}}</expectedResponseText>
-      <url>http://{{HOST_ADDRESS}}/petclinic/</url>
-    </smoketest.HttpRequestTest>
-    
-    <docker.Image name="petclinic">
-      <ports>
-        <docker.PortSpec name="petclinic/exposed-port">
-          <hostPort>8888</hostPort>
-          <containerPort>8080</containerPort>
-        </docker.PortSpec>
-      </ports>
-      <registryHost>{{PROJECT_REGISTRY_HOST}}</registryHost>
-      <image>petportal/petclinic:3.1-20150611154030</image>
-      <links>
-        <docker.LinkSpec name="petclinic/petclinic-backend">
-          <alias>petclinic-backend</alias>
-        </docker.LinkSpec>
-      </links>
-      <volumes>
-        <docker.VolumeSpec name="petclinic/petclinic-config">
-          <containerPath>/application/properties</containerPath>
-          <hostPath>{{HOST_TARGET_PATH}}</hostPath>
-        </docker.VolumeSpec>
-      </volumes>
-      <variables>
-        <docker.EnvironmentVariableSpec name="petclinic/loglevel">
-          <value>{{LOGLEVEL}}</value>
-        </docker.EnvironmentVariableSpec>
-      </variables>
-    </docker.Image>
-    
-    <docker.Image name="petclinic-backend">
-      <registryHost>{{PROJECT_REGISTRY_HOST}}</registryHost>
-      <image>petportal/petclinic-backend:1.1-20150611154030</image>
-    </docker.Image>
-    
     <docker.Image name="ha-proxy">
+      <image>eeacms/haproxy:latest</image>
       <ports>
         <docker.PortSpec name="ha-proxy/web">
           <hostPort>80</hostPort>
@@ -145,26 +123,49 @@ Please refer to Packaging Manual for more details about the DAR packaging format
           <containerPort>1936</containerPort>
         </docker.PortSpec>
       </ports>
-      <image>eeacms/haproxy:latest</image>
       <variables>
         <docker.EnvironmentVariableSpec name="ha-proxy/BACKENDS">
           <value>{{HOST_ADDRESS}}:8888</value>
         </docker.EnvironmentVariableSpec>
       </variables>
     </docker.Image>
-    
-    <docker.File name="petclinic.properties" file="petclinic.properties/petclinic.properties">
-      <targetPath>{{HOST_TARGET_PATH}}/petclinic.properties</targetPath>
-    </docker.File>
+    <docker.Image name="petclinic">
+      <image>petportal/petclinic:3.1-20151311162015</image>
+      <volumesFrom />
+      <registryHost>{{PROJECT_REGISTRY_HOST}}</registryHost>
+      <ports>
+        <docker.PortSpec name="petclinic/exposed-port">
+          <hostPort>8888</hostPort>
+          <containerPort>8080</containerPort>
+        </docker.PortSpec>
+      </ports>
+      <links>
+        <docker.LinkSpec name="petclinic/petclinic-backend">
+          <alias>petclinic-backend</alias>
+        </docker.LinkSpec>
+      </links>
+      <volumes>
+        <docker.VolumeSpec name="petclinic/petclinic-config">
+          <containerPath>/application/properties</containerPath>
+        </docker.VolumeSpec>
+      </volumes>
+      <variables>
+        <docker.EnvironmentVariableSpec name="petclinic/loglevel">
+          <value>{{LOGLEVEL}}</value>
+        </docker.EnvironmentVariableSpec>
+      </variables>
+    </docker.Image>
   </deployables>
+  <applicationDependencies />
 </udm.DeploymentPackage>
+
 
 ```
 
 # Deployable vs. Container Table  #
 
 The following table describes which deployable / container combinations are possible.
-| Deployables | Containers | Generated Deployed
+| Deployables | Containers | Generated Deployed |
 |----------|--------|---------|--------|
 | docker.Image | docker.Machine | docker.RunContainer |
 | docker.Folder | docker.Machine | docker.DataFolderVolume |
