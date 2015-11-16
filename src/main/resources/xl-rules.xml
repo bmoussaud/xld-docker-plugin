@@ -146,6 +146,7 @@
     <rule name="docker.volume.create" scope="deployed">
         <conditions>
             <type>docker.DataFileVolume</type>
+            <type>docker.DataFolderVolume</type>
             <operation>CREATE</operation>
         </conditions>
         <steps>
@@ -182,9 +183,31 @@
         </steps>
     </rule>
 
+    <rule name="docker.cp.folder" scope="deployed">
+        <conditions>
+            <type>docker.DataFolderVolume</type>
+            <operation>CREATE</operation>
+            <operation>MODIFY</operation>
+        </conditions>
+        <steps>
+            <os-script>
+                <description expression="true">"Copy the folder '%s' to the volume '%s' mounted for '%s' " % (deployed.name, deployed.volumeName,
+                    deployed.containerName)
+                </description>
+                <order>67</order>
+                <script>docker/docker-cp-folder</script>
+                <freemarker-context>
+                    <target expression="true">deployed.container</target>
+                    <volumeName expression="true">deployed.volumeName</volumeName>
+                </freemarker-context>
+            </os-script>
+        </steps>
+    </rule>
+
     <rule name="docker.volume.remove" scope="deployed">
         <conditions>
             <type>docker.DataFileVolume</type>
+            <type>docker.DataFolderVolume</type>
             <operation>DESTROY</operation>
         </conditions>
         <steps>
