@@ -22,12 +22,6 @@
         <property name="provider" default="virtualbox" category="Advanced"/>
     </type>
 
-    <type type="docker.Container" extends="generic.Container">
-        <property name="image"/>
-        <property name="volumeDirectory" default="/opt/docker/volumes"/>
-        <method name="logs" delegate="shellScript" script="docker/log" task-description="Docker logs"/>
-        <method name="inspect" delegate="shellScript" script="docker/inspect" task-description="Docker inspect"/>
-    </type>
 
     <type type="docker.RunContainer" extends="udm.BaseDeployed" deployable-type="docker.Image" container-type="docker.Machine">
         <generate-deployable type="docker.Image" extends="udm.BaseDeployable"/>
@@ -109,11 +103,17 @@
         <property name="textFileNamesRegex" default=".+\.(yml | yaml)" hidden="true"/>
     </type-modification>
 
-    <type-modification type="overthere.SshHost">
-        <property name="tmpDeleteOnDisconnect" kind="boolean" default="true" hidden="false" category="Advanced"/>
-    </type-modification>
 
     <!-- smoke test -->
+
+    <type type="docker.Container" extends="udm.BaseContainer">
+        <property name="machine" kind="ci" referenced-type="docker.Machine" as-containment="true"/>
+        <property name="image"/>
+        <method name="logs" delegate="shellScript" script="docker/log" task-description="Docker logs"/>
+        <method name="inspect" delegate="shellScript" script="docker/inspect" task-description="Docker inspect"/>
+    </type>
+
+
     <type type="smoketest.DockerRunner" extends="docker.Container">
         <property name="powershellInstalled" kind="boolean" default="true" required="false" hidden="true"
                   description="Enable to indicate Powershell (V3+) installed on the host associated to the Runner"/>

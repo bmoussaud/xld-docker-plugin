@@ -78,7 +78,6 @@
     <rule name="docker.pull.image.from.registry" scope="deployed">
         <conditions>
             <type>docker.RunContainer</type>
-            <type>smoketest.ExecutedDockerizedHttpRequestTest</type>
             <operation>CREATE</operation>
             <operation>MODIFY</operation>
             <expression>deployed.registryHost is not None</expression>
@@ -102,7 +101,6 @@
     <rule name="docker.pull.image.from.default.registry" scope="deployed">
         <conditions>
             <type>docker.RunContainer</type>
-            <type>smoketest.ExecutedDockerizedHttpRequestTest</type>
             <operation>CREATE</operation>
             <operation>MODIFY</operation>
             <expression>deployed.registryHost is None</expression>
@@ -135,10 +133,10 @@
                 <classpath-resources>
                     <value>smoketest/execute-http-request.sh.ftl</value>
                 </classpath-resources>
-                <target-host expression="true">deployed.container.host</target-host>
+                <target-host expression="true">deployed.container.machine.host</target-host>
                 <freemarker-context>
                     <script>smoketest/execute-http-request</script>
-                    <target expression="true">deployed.container</target>
+                    <target expression="true">deployed.container.machine</target>
                 </freemarker-context>
             </os-script>
         </steps>
