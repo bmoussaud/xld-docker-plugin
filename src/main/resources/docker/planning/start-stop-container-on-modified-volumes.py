@@ -7,18 +7,19 @@
 def stop_start_docker_container(docker_container):
     if docker_container is None:
         return
+
     context.addStep(steps.os_script(
         description="Stopping docker container %s" % docker_container.name,
         order=20,
         script="docker/docker-stop",
-        freemarker_context={'name': docker_container.name},
+        freemarker_context={'name': docker_container.name, 'target': docker_container.container},
         target_host=docker_container.container.host)
     )
     context.addStep(steps.os_script(
         description="Starting docker server %s" % docker_container.name,
         order=80,
         script="docker/docker-start",
-        freemarker_context={'name': docker_container.name},
+        freemarker_context={'name': docker_container.name, 'target': docker_container.container},
         target_host=docker_container.container.host))
 
 

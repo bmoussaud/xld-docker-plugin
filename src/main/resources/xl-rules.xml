@@ -6,10 +6,9 @@
     FOR A PARTICULAR PURPOSE. THIS CODE AND INFORMATION ARE NOT SUPPORTED BY XEBIALABS.
 
 -->
-<!--
-    Note: If you modify this file and automatic reloading is disabled in `planner.conf`, you must restart the XL Deploy server.
--->
+
 <rules xmlns="http://www.xebialabs.com/xl-deploy/xl-rules">
+
     <rule name="docker.RunContainers.Run" scope="plan">
         <planning-script-path>docker/planning/run-containers.py</planning-script-path>
     </rule>
@@ -31,6 +30,9 @@
                 <description expression="true">"Dump the logs of the container '%s'" % (deployed.name)</description>
                 <order>67</order>
                 <script>docker/docker-log</script>
+                <freemarker-context>
+                    <target expression="true">deployed.container</target>
+                </freemarker-context>
             </os-script>
         </steps>
     </rule>
@@ -47,6 +49,7 @@
                 <order>35</order>
                 <script>docker/docker-stop</script>
                 <freemarker-context>
+                    <target expression="true">previousDeployed.container</target>
                     <name expression="true">previousDeployed.name</name>
                 </freemarker-context>
             </os-script>
@@ -65,6 +68,7 @@
                 <order>36</order>
                 <script>docker/docker-rm</script>
                 <freemarker-context>
+                    <target expression="true">previousDeployed.container</target>
                     <name expression="true">previousDeployed.name</name>
                 </freemarker-context>
             </os-script>
@@ -87,6 +91,7 @@
                 <order>2</order>
                 <script>docker/docker-pull-tag</script>
                 <freemarker-context>
+                    <target expression="true">deployed.container</target>
                     <registryHost expression="true">deployed.registryHost</registryHost>
                     <registryPort expression="true">deployed.registryPort</registryPort>
                 </freemarker-context>
@@ -108,6 +113,9 @@
                 </description>
                 <order>2</order>
                 <script>docker/docker-pull</script>
+                <freemarker-context>
+                    <target expression="true">deployed.container</target>
+                </freemarker-context>
             </os-script>
         </steps>
     </rule>
@@ -130,6 +138,7 @@
                 <target-host expression="true">deployed.container.host</target-host>
                 <freemarker-context>
                     <script>smoketest/execute-http-request</script>
+                    <target expression="true">deployed.container</target>
                 </freemarker-context>
             </os-script>
         </steps>
@@ -147,6 +156,7 @@
                 <order>57</order>
                 <script>docker/volume-create</script>
                 <freemarker-context>
+                    <target expression="true">deployed.container</target>
                     <volumeName expression="true">deployed.volumeName</volumeName>
                 </freemarker-context>
             </os-script>
@@ -166,6 +176,10 @@
                 </description>
                 <order>67</order>
                 <script>docker/docker-cp</script>
+                <freemarker-context>
+                    <target expression="true">deployed.container</target>
+                    <volumeName expression="true">deployed.volumeName</volumeName>
+                </freemarker-context>
             </os-script>
         </steps>
     </rule>
@@ -181,6 +195,7 @@
                 <order>57</order>
                 <script>docker/volume-rm</script>
                 <freemarker-context>
+                    <target expression="true">previousDeployed.container</target>
                     <volumeName expression="true">previousDeployed.volumeName</volumeName>
                 </freemarker-context>
             </os-script>
@@ -204,9 +219,8 @@
                 <description expression="true">"Execute docker-compose up '%s' on '%s' " % (deployed.name,deployed.container.name)</description>
                 <order>65</order>
                 <script>docker-compose/up</script>
-                <target-host expression="true">deployed.container.gateway</target-host>
                 <freemarker-context>
-                    <target expression="true">deployed</target>
+                    <target expression="true">deployed.container</target>
                     <application expression="true">deployedApplication.name</application>
                 </freemarker-context>
             </os-script>
@@ -225,9 +239,8 @@
                 </description>
                 <order>35</order>
                 <script>docker-compose/stop</script>
-                <target-host expression="true">previousDeployed.container.gateway</target-host>
                 <freemarker-context>
-                    <target expression="true">previousDeployed</target>
+                    <target expression="true">previousDeployed.container</target>
                     <application expression="true">previousDeployedApplication.name</application>
                 </freemarker-context>
             </os-script>
@@ -246,9 +259,8 @@
                 </description>
                 <order>36</order>
                 <script>docker-compose/rm</script>
-                <target-host expression="true">previousDeployed.container.gateway</target-host>
                 <freemarker-context>
-                    <target expression="true">previousDeployed</target>
+                    <target expression="true">previousDeployed.container</target>
                     <application expression="true">previousDeployedApplication.name</application>
                 </freemarker-context>
             </os-script>
@@ -273,9 +285,8 @@
                 <description expression="true">"Dump the logs of composed containers '%s'" % (deployed.name)</description>
                 <order>67</order>
                 <script>docker-compose/logs</script>
-                <target-host expression="true">deployed.container.gateway</target-host>
                 <freemarker-context>
-                    <target expression="true">deployed</target>
+                    <target expression="true">deployed.container</target>
                     <application expression="true">deployedApplication.name</application>
                 </freemarker-context>
             </os-script>

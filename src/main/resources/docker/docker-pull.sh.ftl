@@ -6,6 +6,7 @@
 
 -->
 <#include "/docker/setup-docker.ftl">
+
 if docker inspect ${deployed.image} > /dev/null ; then
  echo "${deployed.image} exists on the machine"
 else

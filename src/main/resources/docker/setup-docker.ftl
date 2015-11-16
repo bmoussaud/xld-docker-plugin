@@ -5,7 +5,12 @@
     FOR A PARTICULAR PURPOSE. THIS CODE AND INFORMATION ARE NOT SUPPORTED BY XEBIALABS.
 
 -->
-export DOCKER_TLS_VERIFY="${target.container.tls_verify?string('1', '0')}"
-export DOCKER_HOST="tcp://${target.container.address}:${target.container.port}"
-export DOCKER_CERT_PATH="${target.container.certificatePath}"
+<#if (target.dynamicParameters) >
+eval "$(docker-machine env ${target.name})"
+<#else>
+export DOCKER_TLS_VERIFY="${target.tls_verify?string('1', '0')}"
+export DOCKER_HOST="tcp://${target.address}:${target.port}"
+export DOCKER_CERT_PATH="${target.certificatePath}"
+export DOCKER_MACHINE_NAME=${target.name}
+</#if>
 

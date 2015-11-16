@@ -13,8 +13,51 @@ Dependencies:
 
 
 # Sample Applications #
+
 * XL Deploy Docker Sample Application https://github.com/bmoussaud/xld-petclinic-docker
 * XL Deploy Docker MicroService Sample Application https://github.com/bmoussaud/xld-micropet-docker
+
+# Quick Start #
+
+ 
+
+* create a local `docker-machine` named `mydemomachine` with the following command:
+
+```
+$create --driver virtualbox -  mydemomachine
+Running pre-create checks...
+Creating machine...
+Waiting for machine to be running, this may take a few minutes...
+Machine is running, waiting for SSH to be available...
+Detecting operating system of created instance...
+Provisioning created instance...
+Copying certs to the local machine directory...
+Copying certs to the remote machine...
+Setting Docker configuration on the remote daemon...
+To see how to connect Docker to this machine, run: docker-machine env mydemomachine
+```
+
+and run the `docker-machine env` command:
+
+```
+docker-machine env mydemomachine
+export DOCKER_TLS_VERIFY="1"
+export DOCKER_HOST="tcp://192.168.99.104:2376"
+export DOCKER_CERT_PATH="/Users/bmoussaud/.docker/machine/machines/mydemomachine"
+```
+
+* create an `overthere.LocalHost` : `Infrastructure/mylocalmachine`
+
+* create a new container `docker.Machine` in the XLDeploy Repository with the following properties
+
+** id: Infrastructure/mylocalmachine/mydemomachine
+** Type: docker.Machine
+** address: 192.168.99.104
+** port: 2376
+** tls_verify: True
+** Certificate Path: /Users/bmoussaud/.docker/machine/machines/mydemomachine
+
+And add it to an environment.
 
 # Docker RunContainer Configuration #
 
@@ -137,22 +180,16 @@ The following table describes the effect a deployed has on its container.
 
 | Deployed | Create | Destroy | Modify |
 |----------|--------|---------|--------|
-| docker.RunContainer| Pull the container image, Start the container | Stop the container, Remove the container | Stop the container, Remove the container, Pull the container image, Start the container  |
-| docker.DataFileVolume| Copy the file to the remote location | Delete the file from the remote location | Delete the file from the remote location, Copy the file to the remote location|
-| docker.DataFolderVolume| Copy the folder to the remote location - *or* - create a new image with the data| Delete the folder from the remote location - *or* - delete the data container | Delete the folder from the remote location, Copy the folder to the remote location - *or* - delete the data container, create the new data container |
+| docker.RunContainer (*)| Pull the container image, Create the Container, Start the container | Stop the container, Remove the container | Stop the container, Remove the container, Pull the container image, Create the container, Start the container  |
+| docker.DataFileVolume| Create the Docker volume, Copy the file to the volume linked to the container | Delete the file from the volume using the containers mount point | Delete the file from the volume using the containers mount point, Create the Docker volume, Copy the file to the volume linked to the container|
+| docker.DataFileVolume| Create the Docker volume, Copy the folder to the volume linked to the container | Delete the folder from the volume using the containers mount point | Delete the folder from the volume using the containers mount point, Create the Docker volume, Copy the folder to the volume linked to the container|
 | docker.ComposeFile| `docker-compose up`| `docker-compose stop && docker-compose rm`  | `docker-compose stop && docker-compose rm` and `docker-compose up` |
 
+
+(*) the `docker.RunContainer` generates the 'create' and the 'start' steps and sort them based on the links between the containers.
 
 # Docker Compose File Importer #
 
 `docker-compose`  is a great tool but it looks like a black-box. The Docker Compose file importer allows to push `docker-compose`YAML file and to turn these information into `docker.Images` defined in the plugin.
 
-docker volume create --name petclinic-config
-docker cp /tmp/toto.properties petclinic:/application/properties
-
-docker create -p 8888:8080 --link=petclinic-backend:petclinic-backend -v petclinic-config:/application/properties -e loglevel=DEBUG --name petclinic petportal/petclinic:3.1-20150611154030
-
-docker run -d --name petclinic-backend petportal/petclinic-backend:1.1-20150611154030
-docker run -d -p 8888:8080 --link=petclinic-backend:petclinic-backend -v /home/docker/volumes/petportal:/application/properties -e loglevel=DEBUG --name petclinic petportal/petclinic:3.1-20150611154030
-docker run -d -p 80:80 -p 1936:1936 -e BACKENDS=192.168.99.103:8888 --name ha-proxy eeacms/haproxy:latest
 

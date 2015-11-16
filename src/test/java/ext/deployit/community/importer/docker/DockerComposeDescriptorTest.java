@@ -3,7 +3,7 @@
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES OF MERCHANTABILITY AND/OR FITNESS
  * FOR A PARTICULAR PURPOSE. THIS CODE AND INFORMATION ARE NOT SUPPORTED BY XEBIALABS.
  */
-package ext.deployit.community.importer;
+package ext.deployit.community.importer.docker;
 
 import java.io.File;
 import java.util.List;

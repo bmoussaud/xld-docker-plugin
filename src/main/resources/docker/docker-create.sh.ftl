@@ -6,36 +6,38 @@
 
 -->
 <#include "/docker/setup-docker.ftl">
-echo "Running ${deployed.id}"
+
+echo "Running ${deployed_container.id}"
 <#assign cmdLine = ["docker", "create"] />
 
-<#if (deployed.publishAllExposedPorts)>
+<#if (deployed_container.publishAllExposedPorts)>
     <#assign cmdLine = cmdLine + ["-P"]/>
 </#if>
-<#if (deployed.restartAlways)>
+<#if (deployed_container.restartAlways)>
     <#assign cmdLine = cmdLine + ["--restart=always"]/>
 </#if>
-<#if (deployed.memory??)>
-    <#assign cmdLine = cmdLine + ["--memory ${deployed.memory}" ]/>
+<#if (deployed_container.memory??)>
+    <#assign cmdLine = cmdLine + ["--memory ${deployed_container.memory}" ]/>
 </#if>
-<#list deployed.ports as port>
+<#list deployed_container.ports as port>
     <#assign cmdLine = cmdLine + ["-p ${port.hostPort}:${port.containerPort}"]/>
 </#list>
-<#list deployed.links as link>
+<#list deployed_container.links as link>
     <#assign cmdLine = cmdLine + ["--link=${link.name}:${link.alias}"]/>
 </#list>
-<#list deployed.volumes as volume>
+<#list deployed_container.volumes as volume>
     <#assign cmdLine = cmdLine + ["-v ${volume.name}:${volume.containerPath}"]/>
 </#list>
-<#list deployed.volumesFrom as volume>
+<#list deployed_container.volumesFrom as volume>
     <#assign cmdLine = cmdLine + ["--volumes-from=${volume}"]/>
 </#list>
-<#list deployed.variables as variable>
+<#list deployed_container.variables as variable>
     <#assign cmdLine = cmdLine + ["-e \"${variable.name}=${variable.value}\""]/>
 </#list>
 
-<#assign cmdLine = cmdLine + ["--name ${deployed.name}"]/>
-<#assign cmdLine = cmdLine + ["${deployed.image}"]/>
+<#assign cmdLine = cmdLine + ["--name ${deployed_container.name}"]/>
+<#assign cmdLine = cmdLine + ["${deployed_container.image}"]/>
 
 echo <#list cmdLine as item>${item} </#list>
 <#list cmdLine as item>${item} </#list>
+

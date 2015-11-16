@@ -19,18 +19,20 @@ repositories {
   mavenLocal()
   mavenCentral()
   maven {
-    credentials {
-      username 'community-plugins'
-      password 'community'
-    }
-    url 'http://nexus.xebialabs.com/nexus/content/repositories/releases'
+    url 'https://dist.xebialabs.com/public/maven2'
   }
+  maven {
+    url 'http://www.knopflerfish.org/maven2'
+  }
+
+
 }
 
 dependencies {
   compile "com.xebialabs.deployit:udm-plugin-api:$apiVersion"
   compile "com.xebialabs.deployit:engine-spi:$apiVersion"
   compile "com.xebialabs.deployit:engine-api:$apiVersion"
+  compile "com.xebialabs.deployit:appserver-api:$apiVersion"
   compile 'com.esotericsoftware.yamlbeans:yamlbeans:1.09'
   compile 'com.google.guava:guava:18.0'
   compile "junit:junit:4.11"
