@@ -188,7 +188,7 @@ The following table describes the effect a deployed has on its container.
 | docker.ComposeFile| `docker-compose up`| `docker-compose stop && docker-compose rm`  | `docker-compose stop && docker-compose rm` and `docker-compose up` |
 
 
-(*) the `docker.RunContainer` generates the 'create' and the 'start' steps and sort them based on the links between the containers.
+(*) the `docker.RunContainer` generates the 'create' and the 'start' steps and sorts them based on the links between the containers.
 
 # Docker Compose File Importer #
 

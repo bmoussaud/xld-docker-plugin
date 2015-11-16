@@ -8,7 +8,7 @@
 
 docker-compose --version
 mkdir ${application}
-cp ${target.file.path} ${application}/docker-compose.yml
+cp ${deployed.file.path} ${application}/docker-compose.yml
 cd ${application}
 
 echo "-------------------------------------"
