@@ -8,4 +8,4 @@
 <#include "/docker/setup-docker.ftl">
 <#include "/docker-compose/setup-application.ftl">
 
-docker-compose --file ./docker-compose.yml logs --no-color
+docker-compose logs --no-color

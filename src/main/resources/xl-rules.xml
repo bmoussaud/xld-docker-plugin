@@ -220,6 +220,7 @@
                 <order>65</order>
                 <script>docker-compose/up</script>
                 <freemarker-context>
+                    <composed expression="true">deployed</composed>
                     <target expression="true">deployed.container</target>
                     <application expression="true">deployedApplication.name</application>
                 </freemarker-context>
@@ -240,6 +241,7 @@
                 <order>35</order>
                 <script>docker-compose/stop</script>
                 <freemarker-context>
+                    <composed expression="true">previousDeployed</composed>
                     <target expression="true">previousDeployed.container</target>
                     <application expression="true">previousDeployedApplication.name</application>
                 </freemarker-context>
@@ -260,6 +262,7 @@
                 <order>36</order>
                 <script>docker-compose/rm</script>
                 <freemarker-context>
+                    <composed expression="true">previousDeployed</composed>
                     <target expression="true">previousDeployed.container</target>
                     <application expression="true">previousDeployedApplication.name</application>
                 </freemarker-context>
