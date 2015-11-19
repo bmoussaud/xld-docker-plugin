@@ -6,6 +6,5 @@
 
 -->
 <#include "/docker/setup-docker.ftl">
-<#include "/docker-compose/setup-application.ftl">
 
-docker-compose  stop
+docker-compose --file ${composed.file.path} --project-name ${application} stop

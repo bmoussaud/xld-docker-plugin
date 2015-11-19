@@ -6,7 +6,6 @@
 
 -->
 <#include "/docker/setup-docker.ftl">
-<#include "/docker-compose/setup-application.ftl">
 
-docker-compose rm --force
+docker-compose --file ${composed.file.path} --project-name ${application} rm --force
 

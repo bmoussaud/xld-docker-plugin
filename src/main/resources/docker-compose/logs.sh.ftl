@@ -6,6 +6,5 @@
 
 -->
 <#include "/docker/setup-docker.ftl">
-<#include "/docker-compose/setup-application.ftl">
 
-docker-compose logs --no-color
+docker-compose --file ${composed.file.path} --project-name ${application} logs --no-color

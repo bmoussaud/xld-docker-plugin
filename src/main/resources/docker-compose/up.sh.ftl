@@ -6,6 +6,5 @@
 
 -->
 <#include "/docker/setup-docker.ftl">
-<#include "/docker-compose/setup-application.ftl">
 
-docker-compose --file ./docker-compose.yml up <#if (deployed.forceRecreate)>--force-recreate</#if> --no-color --no-build -d
+docker-compose --file ${composed.file.path} --project-name ${application} up <#if (deployed.forceRecreate)>--force-recreate</#if> --no-color --no-build -d
