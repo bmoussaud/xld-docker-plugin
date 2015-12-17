@@ -16,8 +16,13 @@ echo "Creating swarm docker '${deployed.name}' machine using ${deployed.driver} 
 </#list>
 
 <#list deployed.engineOptions?keys as k>
-    <#assign opt="${k}=${deployed.engineOptions.get(k)}"/>
+    <#assign opt="${k}=${deployed.engineOptions[k]}"/>
     <#assign cmdLine = cmdLine + ["--engine-opt","${opt}"]/>
+</#list>
+
+<#list deployed.engineLabels?keys as k>
+    <#assign opt="${k}=${deployed.engineLabels[k]}"/>
+    <#assign cmdLine = cmdLine + ["--engine-label","${opt}"]/>
 </#list>
 
 <#assign cmdLine = cmdLine + ["${deployed.machineName}"]/>

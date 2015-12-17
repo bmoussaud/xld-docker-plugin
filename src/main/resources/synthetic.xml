@@ -30,6 +30,7 @@
         <property name="image"/>
         <property name="command" required="false"/>
         <property name="entryPoint" required="false"/>
+        <property name="labels" kind="map_string_string" required="false" category="Labels"/>
         <property name="publishAllExposedPorts" required="false" kind="boolean" default="false" category="Network"/>
         <property name="ports" kind="set_of_ci" referenced-type="docker.Port" as-containment="true" required="false" category="Network"/>
         <property name="links" kind="set_of_ci" referenced-type="docker.Link" as-containment="true" required="false" category="Network"/>
@@ -170,6 +171,8 @@
         <property name="insecureRegistries" kind="list_of_string" required="false" description="insecure registries to allow with the created engine"/>
         <property name="engineOptions" kind="map_string_string" required="false"
                   description="Arbitrary flags to include with the created engine in the form flag=value"/>
+        <property name="engineLabels" kind="map_string_string" required="false"
+                  description="Specify labels for the created engine key=value"/>
         <property name="machineName" required="false" category="Provisioning"/>
         <property name="environmentId" required="false" category="Provisioning"/>
     </type>
@@ -182,6 +185,8 @@
         <property name="insecureRegistries" kind="list_of_string" required="false" description="insecure registries to allow with the created engine"/>
         <property name="engineOptions" kind="map_string_string" required="false"
                   description="Arbitrary flags to include with the created engine in the form flag=value"/>
+        <property name="engineLabels" kind="map_string_string" required="false"
+                  description="Specify labels for the created engine key=value"/>
         <property name="machineName" required="false" category="Provisioning"/>
         <property name="environmentId" required="false" category="Provisioning"/>
     </type>
