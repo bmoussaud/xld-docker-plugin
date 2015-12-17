@@ -20,6 +20,8 @@
         <property name="dynamicParameters" kind="boolean" default="false" required="false" category="Advanced"
                   description="use the docker-machnine env command line to generate the connection information"/>
         <property name="provider" default="virtualbox" category="Advanced"/>
+        <property name="swarmMaster" default="false" kind="boolean" required="false" category="Swarm"/>
+        <property name="swarmPort" kind="integer" default="3376" required="false" category="Swarm"/>
     </type>
 
 
@@ -160,5 +162,29 @@
         <property name="executorScript" hidden="true" default="docker/${deployed.container.clientWrapperScript}"/>
     </type>
     <!-- /MySQL Database -->
+
+    <!-- Provisioning -->
+    <type type="docker.DeployedDockerMachine" extends="udm.BaseDeployed" container-type="overthere.Host" deployable-type="docker.MachineSpec">
+        <generate-deployable type="docker.MachineSpec" extends="udm.BaseDeployable"/>
+        <property name="driver" default="virtualbox" description="Driver to create machine with."/>
+        <property name="insecureRegistries" kind="list_of_string" required="false" description="insecure registries to allow with the created engine"/>
+        <property name="engineOptions" kind="map_string_string" required="false"
+                  description="Arbitrary flags to include with the created engine in the form flag=value"/>
+        <property name="machineName" required="false" category="Provisioning"/>
+        <property name="environmentId" required="false" category="Provisioning"/>
+    </type>
+
+    <type type="docker.DeployedSwarmMachine" extends="udm.BaseDeployed" container-type="overthere.Host" deployable-type="docker.SwarmMachineSpec">
+        <generate-deployable type="docker.SwarmMachineSpec" extends="udm.BaseDeployable"/>
+        <property name="driver" default="virtualbox" description="Driver to create machine with."/>
+        <property name="master" kind="boolean" default="false" required="false"/>
+        <property name="swarmToken"/>
+        <property name="insecureRegistries" kind="list_of_string" required="false" description="insecure registries to allow with the created engine"/>
+        <property name="engineOptions" kind="map_string_string" required="false"
+                  description="Arbitrary flags to include with the created engine in the form flag=value"/>
+        <property name="machineName" required="false" category="Provisioning"/>
+        <property name="environmentId" required="false" category="Provisioning"/>
+    </type>
+    <!-- /Provisioning -->
 
 </synthetic>
