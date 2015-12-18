@@ -5,25 +5,28 @@
     FOR A PARTICULAR PURPOSE. THIS CODE AND INFORMATION ARE NOT SUPPORTED BY XEBIALABS.
 
 -->
-echo "Creating swarm docker '${deployed.name}' machine using ${deployed.driver} provider"
-<#assign cmdLine = ["docker-machine", "create","--driver","${deployed.driver}","--swarm","--swarm-discovery","token://${deployed.swarmToken}"] />
+echo "Creating swarm docker '${deployed.machineName}' machine ..."
+<#assign cmdLine = ["docker-machine", "create","--driver","${deployed.driver}","--swarm"] />
 <#if deployed.master>
-  <#assign cmdLine = cmdLine + ["--swarm-master"]/>
+    <#assign cmdLine = cmdLine + ["--swarm-master"]/>
 </#if>
 
 <#list deployed.insecureRegistries as registry>
     <#assign cmdLine = cmdLine + ["--engine-insecure-registry",registry]/>
 </#list>
 
-<#list deployed.engineOptions?keys as k>
-    <#assign opt="${k}=${deployed.engineOptions[k]}"/>
-    <#assign cmdLine = cmdLine + ["--engine-opt","${opt}"]/>
+<#list deployed.engineOptions as option>
+    <#assign cmdLine = cmdLine + ["--engine-opt","\"${option}\""]/>
 </#list>
 
-<#list deployed.engineLabels?keys as k>
-    <#assign opt="${k}=${deployed.engineLabels[k]}"/>
-    <#assign cmdLine = cmdLine + ["--engine-label","${opt}"]/>
+<#list deployed.engineLabels as label>
+    <#assign cmdLine = cmdLine + ["--engine-label","\"${label}\""]/>
 </#list>
+
+<#assign cmdLine = cmdLine + ["--swarm-discovery","${deployed.swarmDiscovery}"]/>
+<#assign cmdLine = cmdLine + ["--swarm-image","${deployed.swarmImage}"]/>
+<#assign cmdLine = cmdLine + ["--swarm-strategy","${deployed.swarmStrategy}"]/>
+<#assign cmdLine = cmdLine + ["--swarm-host","${deployed.swarmHost}"]/>
 
 <#assign cmdLine = cmdLine + ["${deployed.machineName}"]/>
 echo Executing <#list cmdLine as item>${item} </#list>

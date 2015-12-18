@@ -12,15 +12,14 @@ echo "Creating docker '${deployed.name}' machine using ${deployed.driver} provid
     <#assign cmdLine = cmdLine + ["--engine-insecure-registry",registry]/>
 </#list>
 
-<#list deployed.engineOptions?keys as k>
-    <#assign opt="${k}=${deployed.engineOptions[k]}"/>
-    <#assign cmdLine = cmdLine + ["--engine-opt","${opt}"]/>
+<#list deployed.engineOptions as option>
+    <#assign cmdLine = cmdLine + ["--engine-opt","\"${option}\""]/>
 </#list>
 
-<#list deployed.engineLabels?keys as k>
-    <#assign opt="${k}=${deployed.engineLabels[k]}"/>
-    <#assign cmdLine = cmdLine + ["--engine-label","${opt}"]/>
+<#list deployed.engineLabels as label>
+    <#assign cmdLine = cmdLine + ["--engine-label","\"${label}\""]/>
 </#list>
+
 
 <#assign cmdLine = cmdLine + ["${deployed.machineName}"]/>
 echo Executing <#list cmdLine as item>${item} </#list>
