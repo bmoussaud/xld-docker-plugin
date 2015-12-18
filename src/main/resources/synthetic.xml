@@ -28,9 +28,11 @@
     <type type="docker.RunContainer" extends="udm.BaseDeployed" deployable-type="docker.Image" container-type="docker.Machine">
         <generate-deployable type="docker.Image" extends="udm.BaseDeployable"/>
         <property name="image"/>
-        <property name="command" required="false"/>
         <property name="entryPoint" required="false"/>
+        <property name="command" required="false"/>
+        <property name="args" required="false"/>
         <property name="labels" kind="map_string_string" required="false" category="Labels"/>
+        <property name="network" default="default" required="false" category="Network"/>
         <property name="publishAllExposedPorts" required="false" kind="boolean" default="false" category="Network"/>
         <property name="ports" kind="set_of_ci" referenced-type="docker.Port" as-containment="true" required="false" category="Network"/>
         <property name="links" kind="set_of_ci" referenced-type="docker.Link" as-containment="true" required="false" category="Network"/>

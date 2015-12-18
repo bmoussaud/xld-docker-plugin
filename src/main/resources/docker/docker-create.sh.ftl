@@ -19,6 +19,9 @@ echo "Running ${deployed_container.id}"
 <#if (deployed_container.memory??)>
     <#assign cmdLine = cmdLine + ["--memory ${deployed_container.memory}" ]/>
 </#if>
+<#if (deployed_container.entryPoint??)>
+    <#assign cmdLine = cmdLine + ["--entrypoint ${deployed_container.entryPoint}" ]/>
+</#if>
 <#list deployed_container.ports as port>
     <#assign cmdLine = cmdLine + ["-p ${port.hostPort}:${port.containerPort}"]/>
 </#list>
@@ -38,9 +41,17 @@ echo "Running ${deployed_container.id}"
 <#list deployed_container.variables as variable>
     <#assign cmdLine = cmdLine + ["-e \"${variable.name}=${variable.value}\""]/>
 </#list>
-
+<#assign cmdLine = cmdLine + ["--net=${deployed_container.network}"]/>
 <#assign cmdLine = cmdLine + ["--name ${deployed_container.name}"]/>
 <#assign cmdLine = cmdLine + ["${deployed_container.image}"]/>
+
+<#if (deployed_container.command??)>
+    <#assign cmdLine = cmdLine + ["${deployed_container.command}"]/>
+</#if>
+<#if (deployed_container.args??)>
+    <#assign cmdLine = cmdLine + ["${deployed_container.args}"]/>
+</#if>
+
 
 echo <#list cmdLine as item>${item} </#list>
 <#list cmdLine as item>${item} </#list>
