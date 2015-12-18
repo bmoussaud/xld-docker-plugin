@@ -41,7 +41,9 @@ echo "Running ${deployed_container.id}"
 <#list deployed_container.variables as variable>
     <#assign cmdLine = cmdLine + ["-e \"${variable.name}=${variable.value}\""]/>
 </#list>
-<#assign cmdLine = cmdLine + ["--net=${deployed_container.network}"]/>
+<#if (deployed_container.network??)>
+    <#assign cmdLine = cmdLine + ["--net=${deployed_container.network}"]/>
+</#if>
 <#assign cmdLine = cmdLine + ["--name ${deployed_container.name}"]/>
 <#assign cmdLine = cmdLine + ["${deployed_container.image}"]/>
 

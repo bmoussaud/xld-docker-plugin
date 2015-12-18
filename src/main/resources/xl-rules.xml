@@ -13,6 +13,31 @@
         <planning-script-path>docker/planning/run-containers.py</planning-script-path>
     </rule>
 
+    <rule name="docker.cannot.have.network.and.links" scope="deployed">
+        <conditions>
+            <type>docker.RunContainer</type>
+            <operation>CREATE</operation>
+            <operation>MODIFY</operation>
+        </conditions>
+        <planning-script-path>docker/planning/check-container-configuration.py</planning-script-path>
+    </rule>
+
+    <rule name="docker.network.deploy" scope="deployed">
+        <conditions>
+            <type>docker.Network</type>
+            <operation>CREATE</operation>
+            <operation>MODIFY</operation>
+        </conditions>
+        <steps>
+            <os-script>
+                <description expression="true">"Create a docker network '%s'" % (deployed.name)</description>
+                <order>63</order>
+                <script>docker/docker-network-create</script>
+            </os-script>
+        </steps>
+    </rule>
+
+
     <rule name="docker.Container.Log" scope="deployed">
         <conditions>
             <type>docker.RunContainer</type>

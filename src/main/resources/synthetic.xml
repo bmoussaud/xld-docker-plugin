@@ -32,7 +32,7 @@
         <property name="command" required="false"/>
         <property name="args" required="false"/>
         <property name="labels" kind="map_string_string" required="false" category="Labels"/>
-        <property name="network" default="default" required="false" category="Network"/>
+        <property name="network" required="false" category="Network"/>
         <property name="publishAllExposedPorts" required="false" kind="boolean" default="false" category="Network"/>
         <property name="ports" kind="set_of_ci" referenced-type="docker.Port" as-containment="true" required="false" category="Network"/>
         <property name="links" kind="set_of_ci" referenced-type="docker.Link" as-containment="true" required="false" category="Network"/>
@@ -108,6 +108,11 @@
         <property name="textFileNamesRegex" default=".+\.(yml | yaml)" hidden="true"/>
     </type-modification>
 
+
+    <type type="docker.Network" extends="udm.BaseDeployed" deployable-type="docker.NetworkSpec" container-type="docker.Machine">
+        <generate-deployable type="docker.NetworkSpec" extends="udm.BaseDeployable"/>
+        <property name="driver"/>
+    </type>
 
     <!-- smoke test -->
 
