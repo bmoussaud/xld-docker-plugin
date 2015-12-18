@@ -343,7 +343,7 @@
             <jython>
                 <order>60</order>
                 <description expression="true">"Define the '%s' Docker machine in the XLD Repository" % (deployed.machineName)</description>
-                <script-path>docker-machine/ci/create.py</script-path>
+                <script>docker-machine/ci/create.py</script>
                 <jython-context>
                     <context_key expression="true">"data_%s" % deployed.name</context_key>
                     <ci_type>docker.Machine</ci_type>
@@ -377,7 +377,7 @@
             </jython>
             <jython>
                 <description expression="true">"Define the '%s' Docker machine in the XLD Repository" % (deployed.name)</description>
-                <script-path>docker-machine/ci/create.py</script-path>
+                <script>docker-machine/ci/create.py</script>
                 <order expression="true">59 if deployed.master else 60</order>
                 <jython-context>
                     <context_key expression="true">"data_%s" % deployed.name</context_key>
@@ -403,7 +403,7 @@
             <jython>
                 <order>61</order>
                 <description expression="true">"Define the '%s' Environment in the XLD Repository" % (deployed.environmentId)</description>
-                <script-path>docker-machine/ci/create-environment.py</script-path>
+                <script>docker-machine/ci/create-environment.py</script>
                 <jython-context>
                     <ci_type>udm.Environment</ci_type>
                     <ci_id expression="true">deployed.environmentId</ci_id>
@@ -412,7 +412,7 @@
             <jython>
                 <order>61</order>
                 <description expression="true">"Add '%s' docker-machine to the environment '%s'" % (deployed.name,deployed.environmentId)</description>
-                <script-path>docker-machine/ci/add-to-environment.py</script-path>
+                <script>docker-machine/ci/add-to-environment.py</script>
                 <jython-context>
                     <ci_id expression="true">deployed.environmentId</ci_id>
                     <ci_member_id expression="true">"/".join([deployed.container.id,deployed.machineName])</ci_member_id>
@@ -434,7 +434,7 @@
                 <description expression="true">"Remove '%s' docker-machine from the environment '%s'" %
                     (previousDeployed.machineName,previousDeployed.environmentId)
                 </description>
-                <script-path>docker-machine/ci/remove-from-environment.py</script-path>
+                <script>docker-machine/ci/remove-from-environment.py</script>
                 <jython-context>
                     <ci_id expression="true">previousDeployed.environmentId</ci_id>
                     <ci_member_id expression="true">"/".join([previousDeployed.container.id,"%s" % previousDeployed.machineName])</ci_member_id>
@@ -453,7 +453,7 @@
             <jython>
                 <order>40</order>
                 <description expression="true">"Remove the '%s' Docker machine from the XLD Repository" % (previousDeployed.machineName)</description>
-                <script-path>docker-machine/ci/destroy.py</script-path>
+                <script>docker-machine/ci/destroy.py</script>
                 <jython-context>
                     <ci_id expression="true">"/".join([previousDeployed.container.id,"%s" % previousDeployed.machineName])</ci_id>
                 </jython-context>
