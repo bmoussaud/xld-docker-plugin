@@ -31,7 +31,7 @@
         <property name="entryPoint" required="false"/>
         <property name="command" required="false"/>
         <property name="args" required="false"/>
-        <property name="labels" kind="map_string_string" required="false" category="Labels"/>
+        <property name="labels" kind="set_of_string" required="false" category="Labels"/>
         <property name="network" required="false" category="Network"/>
         <property name="publishAllExposedPorts" required="false" kind="boolean" default="false" category="Network"/>
         <property name="ports" kind="set_of_ci" referenced-type="docker.Port" as-containment="true" required="false" category="Network"/>

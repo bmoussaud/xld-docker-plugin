@@ -34,9 +34,8 @@ echo "Running ${deployed_container.id}"
 <#list deployed_container.volumesFrom as volume>
     <#assign cmdLine = cmdLine + ["--volumes-from=${volume}"]/>
 </#list>
-<#list deployed_container.labels?keys as k>
-    <#assign opt="${k}=${deployed_container.labels[k]}"/>
-    <#assign cmdLine = cmdLine + ["--label=${opt}"]/>
+<#list deployed_container.labels as label>
+    <#assign cmdLine = cmdLine + ["--label=${label}"]/>
 </#list>
 <#list deployed_container.variables as variable>
     <#assign cmdLine = cmdLine + ["-e \"${variable.name}=${variable.value}\""]/>

@@ -33,6 +33,9 @@
                 <description expression="true">"Create a docker network '%s'" % (deployed.name)</description>
                 <order>63</order>
                 <script>docker/docker-network-create</script>
+                <freemarker-context>
+                    <target expression="true">deployed.container</target>
+                </freemarker-context>
             </os-script>
         </steps>
     </rule>
