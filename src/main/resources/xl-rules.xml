@@ -40,6 +40,24 @@
         </steps>
     </rule>
 
+    <rule name="docker.network.undeploy" scope="deployed">
+        <conditions>
+            <type>docker.Network</type>
+            <operation>DESTROY</operation>
+            <operation>MODIFY</operation>
+        </conditions>
+        <steps>
+            <os-script>
+                <description expression="true">"Remove a docker network '%s'" % (previousDeployed.name)</description>
+                <order>49</order>
+                <script>docker/docker-network-destroy</script>
+                <freemarker-context>
+                    <target expression="true">previousDeployed.container</target>
+                </freemarker-context>
+            </os-script>
+        </steps>
+    </rule>
+
 
     <rule name="docker.Container.Log" scope="deployed">
         <conditions>

@@ -6,5 +6,5 @@
 
 -->
 <#include "/docker/setup-docker.ftl">
-echo "docker network create -d ${deployed.driver} ${deployed.name}"
-docker network create -d ${deployed.driver} ${deployed.name}
+echo "docker network rm  ${previousDeployed.name}"
+docker network rm  ${previousDeployed.name}
